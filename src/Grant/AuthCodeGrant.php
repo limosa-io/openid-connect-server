@@ -20,9 +20,11 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
 {
     use OIDCTrait;
 
-    private $authCodeTTL;
+    protected $authCodeTTL;
 
-    private $idTokenTTL;
+    protected $idTokenTTL;
+
+    protected $session;
 
     /**
      * @param AuthCodeRepositoryInterface     $authCodeRepository
@@ -32,6 +34,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     public function __construct(
         AuthCodeRepositoryInterface $authCodeRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
+        Session $session,
         \DateInterval $authCodeTTL,
         \DateInterval $idTokenTTL
     ) {
@@ -39,6 +42,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
 
         $this->authCodeTTL = $authCodeTTL;
         $this->idTokenTTL = $idTokenTTL;
+        $this->session = $session;
     }
 
     public function getIdentifier()
@@ -223,7 +227,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
                 'id_token_hint'         => $authorizationRequest->getIDTokenHint(),
                 'claims'                => $authorizationRequest->getClaims(),
                 'sessionInformation'    => (string) $authorizationRequest->getSessionInformation(),
-                'auth_time'             => resolve(Session::class)->getAuthTime()->format('U')
+                'auth_time'             => $this->session->getAuthTime()->format('U')
 
             ];
 

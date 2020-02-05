@@ -6,7 +6,8 @@
         "league/oauth2-server": "^8.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "laminas/laminas-diactoros": "^2.1.2"
     },
     "autoload": {
         "psr-4": {
