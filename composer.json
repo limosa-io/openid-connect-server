@@ -1,0 +1,29 @@
+{
+    "name": "nl.idaas.nl/openid-server",
+    "description": "OpenID Connect server for PHP",
+    "type": "library",
+    "require": {
+        "league/oauth2-server": "^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Idaas\\OpenID\\Server\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IdaasTests\\": "tests/"
+        }
+    },
+    "license": "LGPL-3.0-only",
+    "authors": [
+        {
+            "name": "Arie Timmerman",
+            "email": "arietimmerman@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
