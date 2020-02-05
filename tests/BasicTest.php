@@ -6,9 +6,9 @@ use DateInterval;
 use Idaas\OpenID\Grant\AuthCodeGrant;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
 use Idaas\OpenID\Session;
-use IdaasTests\Stubs\AuthCodeEntity;
-use IdaasTests\Stubs\ClientEntity;
-use IdaasTests\Stubs\UserEntity;
+use LeagueTests\Stubs\AuthCodeEntity;
+use LeagueTests\Stubs\ClientEntity;
+use LeagueTests\Stubs\UserEntity;
 use Laminas\Diactoros\Response;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
@@ -30,8 +30,8 @@ class BasicTest extends TestCase
             $clientRepository,
             $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock(),
-            'file://' . __DIR__ . '/Stubs/private.key',
-            'file://' . __DIR__ . '/Stubs/public.key'
+            'file://' . __DIR__ . '/../vendor/league/oauth2-server/tests/Stubs/private.key',
+            'file://' . __DIR__ . '/../vendor/league/oauth2-server/tests/Stubs/public.key'
         );
 
         $authCodeRepository = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
