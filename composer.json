@@ -10,7 +10,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Idaas\\OpenID\\Server\\": "src/"
+            "Idaas\\OpenID\\": "src/"
         }
     },
     "autoload-dev": {
