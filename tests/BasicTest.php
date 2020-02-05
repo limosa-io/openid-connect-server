@@ -1,13 +1,62 @@
 <?php
 
-namespace IdaasTests\BasicTest;
+namespace IdaasTests;
 
+use DateInterval;
+use Idaas\OpenID\Grant\AuthCodeGrant;
+use Idaas\OpenID\RequestTypes\AuthenticationRequest;
+use Idaas\OpenID\Session;
+use IdaasTests\Stubs\AuthCodeEntity;
+use IdaasTests\Stubs\ClientEntity;
+use IdaasTests\Stubs\UserEntity;
+use Laminas\Diactoros\Response;
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
 
 class BasicTest extends TestCase
 {
-    public function testRespo()
+
+    public function testResponse()
     {
-        $this->assertTrue(true);
+        $clientRepository = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
+
+        $server = new AuthorizationServer(
+            $clientRepository,
+            $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock(),
+            $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock(),
+            'file://' . __DIR__ . '/Stubs/private.key',
+            'file://' . __DIR__ . '/Stubs/public.key'
+        );
+
+        $authCodeRepository = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
+        $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
+
+        $grant = new AuthCodeGrant(
+            $authCodeRepository,
+            $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            new Session,
+            new DateInterval('PT10M'),
+            new DateInterval('PT10M')
+        );
+
+        $server->enableGrantType($grant);
+
+        $authRequest = new AuthenticationRequest();
+        $authRequest->setAuthorizationApproved(true);
+        $authRequest->setClient(new ClientEntity());
+        $authRequest->setGrantTypeId('authorization_code_oidc');
+        $authRequest->setUser(new UserEntity());
+
+        $this->assertInstanceOf(
+            ResponseInterface::class,
+            $server->completeAuthorizationRequest($authRequest, new Response)
+        );
+
     }
 }
