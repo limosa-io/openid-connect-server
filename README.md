@@ -1,5 +1,5 @@
 # PHP OpenID Connect Server
 
-This is an OpenID Connect Server written in PHP.
+This is an OpenID Connect Server written in PHP, build on top of [thephpleague/oauth2-server](https://github.com/thephpleague/oauth2-server).
 
-Do NOT expect something to work. While this code comes from [idaas.nl](https://www.idaas.nl/), it has stripped of all idaas.nl specific code. As a result, it is currently broken.
+It is used by [idaas.nl](https://www.idaas.nl/).
