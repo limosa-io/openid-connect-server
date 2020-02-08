@@ -1,5 +1,7 @@
 # PHP OpenID Connect Server
 
+![](https://github.com/arietimmerman/openid-server/workflows/CI/badge.svg)
+
 This is an OpenID Connect Server written in PHP, built on top of [thephpleague/oauth2-server](https://github.com/thephpleague/oauth2-server).
 
 It is used by [idaas.nl](https://www.idaas.nl/): (not) yet another identity as a service platform.
