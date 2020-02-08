@@ -143,12 +143,6 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     ) {
         $result = parent::respondToAccessTokenRequest($request, $responseType, $accessTokenTTL);
 
-        //Check if $result is instanceof OIDC BearerTokenResponse
-        // if (!($result instanceof BearerTokenResponse)) {
-        //     throw OAuthServerException::invalidRequest('no openid flow');
-        // }
-
-        //if we're here, we know we can decrypt it and it is not null
         $encryptedAuthCode = $this->getRequestParameter('code', $request, null);
         $authCodePayload = json_decode($this->decrypt($encryptedAuthCode));
 
