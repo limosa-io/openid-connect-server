@@ -3,8 +3,9 @@
 namespace Idaas\OpenID\ResponseTypes;
 
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\ResponseTypes\BearerTokenResponse as LeagueBearerTokenResponse;
 
-class BearerTokenResponse extends \League\OAuth2\Server\ResponseTypes\BearerTokenResponse
+class BearerTokenResponse extends LeagueBearerTokenResponse implements ResponseTypeInterface
 {
     protected $idToken = null;
 
