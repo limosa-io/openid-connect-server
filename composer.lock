@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2acbd72a598e1e5e220d212b15225f59",
+    "content-hash": "237424d7fd6d6da5324ffef5cf7d8759",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -176,16 +176,16 @@
         },
         {
             "name": "league/oauth2-server",
-            "version": "8.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/oauth2-server.git",
-                "reference": "e1dc4d708c56fcfa205be4bb1862b6d525b4baac"
+                "reference": "d1376a116011f0a8a2b1f48d6a121cc98c96f85d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/e1dc4d708c56fcfa205be4bb1862b6d525b4baac",
-                "reference": "e1dc4d708c56fcfa205be4bb1862b6d525b4baac",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/d1376a116011f0a8a2b1f48d6a121cc98c96f85d",
+                "reference": "d1376a116011f0a8a2b1f48d6a121cc98c96f85d",
                 "shasum": ""
             },
             "require": {
@@ -194,7 +194,7 @@
                 "ext-openssl": "*",
                 "lcobucci/jwt": "^3.3.1",
                 "league/event": "^2.2",
-                "php": ">=7.1.0",
+                "php": ">=7.2.0",
                 "psr/http-message": "^1.0.1"
             },
             "replace": {
@@ -202,11 +202,11 @@
                 "lncd/oauth2": "*"
             },
             "require-dev": {
+                "laminas/laminas-diactoros": "^2.1.2",
                 "phpstan/phpstan": "^0.11.8",
                 "phpstan/phpstan-phpunit": "^0.11.2",
-                "phpunit/phpunit": "^7.5.13 || ^8.2.3",
-                "roave/security-advisories": "dev-master",
-                "zendframework/zend-diactoros": "^2.1.2"
+                "phpunit/phpunit": "^8.4.3",
+                "roave/security-advisories": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -249,7 +249,7 @@
                 "secure",
                 "server"
             ],
-            "time": "2019-07-13T18:58:26+00:00"
+            "time": "2020-02-05T15:21:57+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -756,12 +756,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "da71602ae92163cfa94f5e5dbdd969629e060a05"
+                "reference": "6a88d1ae42db82ae8274bbf55880d0876ee24323"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/da71602ae92163cfa94f5e5dbdd969629e060a05",
-                "reference": "da71602ae92163cfa94f5e5dbdd969629e060a05",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/6a88d1ae42db82ae8274bbf55880d0876ee24323",
+                "reference": "6a88d1ae42db82ae8274bbf55880d0876ee24323",
                 "shasum": ""
             },
             "require": {
@@ -801,7 +801,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-02-02T19:24:25+00:00"
+            "time": "2020-02-05T20:17:02+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -809,12 +809,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "0708a5714a03b5b27a65786543503d9d3ee50e07"
+                "reference": "a748970492a3fc0c12a823e27c520cf9820b90fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/0708a5714a03b5b27a65786543503d9d3ee50e07",
-                "reference": "0708a5714a03b5b27a65786543503d9d3ee50e07",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/a748970492a3fc0c12a823e27c520cf9820b90fb",
+                "reference": "a748970492a3fc0c12a823e27c520cf9820b90fb",
                 "shasum": ""
             },
             "require": {
@@ -847,7 +847,7 @@
                 }
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "time": "2020-02-02T19:26:52+00:00"
+            "time": "2020-02-05T20:18:28+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -2063,7 +2063,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "league/oauth2-server": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

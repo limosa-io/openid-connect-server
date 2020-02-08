@@ -2,8 +2,6 @@
 
 namespace Idaas\OpenID;
 
-use function GuzzleHttp\json_decode;
-
 class SessionInformation
 {
     public $acr;
@@ -12,7 +10,7 @@ class SessionInformation
 
     public static function fromJSON($json)
     {
-        $json = json_decode($json);
+        $json = \json_decode($json);
 
         $result = new self();
 
