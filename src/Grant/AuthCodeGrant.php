@@ -20,9 +20,11 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
 {
     use OIDCTrait;
 
-    private $authCodeTTL;
+    protected $authCodeTTL;
 
-    private $idTokenTTL;
+    protected $idTokenTTL;
+
+    protected $session;
 
     /**
      * @param AuthCodeRepositoryInterface     $authCodeRepository
@@ -32,6 +34,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     public function __construct(
         AuthCodeRepositoryInterface $authCodeRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
+        Session $session,
         \DateInterval $authCodeTTL,
         \DateInterval $idTokenTTL
     ) {
@@ -39,6 +42,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
 
         $this->authCodeTTL = $authCodeTTL;
         $this->idTokenTTL = $idTokenTTL;
+        $this->session = $session;
     }
 
     public function getIdentifier()
@@ -140,9 +144,9 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $result = parent::respondToAccessTokenRequest($request, $responseType, $accessTokenTTL);
 
         //Check if $result is instanceof OIDC BearerTokenResponse
-        if (!($result instanceof BearerTokenResponse)) {
-            throw OAuthServerException::invalidRequest('no openid flow');
-        }
+        // if (!($result instanceof BearerTokenResponse)) {
+        //     throw OAuthServerException::invalidRequest('no openid flow');
+        // }
 
         //if we're here, we know we can decrypt it and it is not null
         $encryptedAuthCode = $this->getRequestParameter('code', $request, null);
@@ -223,7 +227,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
                 'id_token_hint'         => $authorizationRequest->getIDTokenHint(),
                 'claims'                => $authorizationRequest->getClaims(),
                 'sessionInformation'    => (string) $authorizationRequest->getSessionInformation(),
-                'auth_time'             => resolve(Session::class)->getAuthTime()->format('U')
+                'auth_time'             => $this->session->getAuthTime()->format('U')
 
             ];
 
