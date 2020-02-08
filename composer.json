@@ -1,5 +1,5 @@
 {
-    "name": "nl.idaas.nl/openid-server",
+    "name": "nl.idaas/openid-server",
     "description": "OpenID Connect server for PHP",
     "type": "library",
     "config": {
