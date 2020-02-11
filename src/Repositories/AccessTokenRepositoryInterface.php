@@ -2,11 +2,16 @@
 
 namespace Idaas\OpenID\Repositories;
 
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use Idaas\OpenID\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface as LeagueAccessTokenRepositoryInterface;
 
 interface AccessTokenRepositoryInterface extends LeagueAccessTokenRepositoryInterface
 {
+
+    /**
+     * 
+     * @param array $claims []
+     */
     public function storeClaims($id, array $claims);
 
     /**
@@ -17,5 +22,4 @@ interface AccessTokenRepositoryInterface extends LeagueAccessTokenRepositoryInte
      */
     public function getAccessToken($tokenId);
 
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity);
 }

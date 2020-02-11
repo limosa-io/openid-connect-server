@@ -3,7 +3,9 @@
 namespace Idaas\OpenID\Grant;
 
 use Idaas\OpenID\Entities\IdToken;
+use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
+use Idaas\OpenID\ResponseHandler;
 use Idaas\OpenID\ResponseTypes\BearerTokenResponse;
 use Idaas\OpenID\Session;
 use Idaas\OpenID\SessionInformation;
@@ -26,6 +28,8 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
 
     protected $session;
 
+    protected $claimRepository;
+
     /**
      * @param AuthCodeRepositoryInterface     $authCodeRepository
      * @param RefreshTokenRepositoryInterface $refreshTokenRepository
@@ -34,11 +38,14 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     public function __construct(
         AuthCodeRepositoryInterface $authCodeRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
+        ClaimRepositoryInterface $claimRepository,
         Session $session,
         \DateInterval $authCodeTTL,
         \DateInterval $idTokenTTL
     ) {
         parent::__construct($authCodeRepository, $refreshTokenRepository, $authCodeTTL);
+
+        $this->claimRepository = $claimRepository;
 
         $this->authCodeTTL = $authCodeTTL;
         $this->idTokenTTL = $idTokenTTL;
@@ -123,8 +130,9 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         }
 
         $claims = $this->getQueryStringParameter('claims', $request);
-        $claims = $claims ? json_decode($claims, true) : null;
-        $result->setClaims($claims);
+        $result->setClaims(
+            $this->claimRepository->claimsRequestToEntities($claims ? json_decode($claims, true) : null)
+        );
 
         if (!empty($display = $this->getQueryStringParameter('display', $request))) {
             $result->setDisplay($display);
@@ -193,8 +201,6 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
             throw new \LogicException('An instance of UserEntityInterface should be set on the AuthorizationRequest');
         }
 
-        $finalRedirectUri = $authorizationRequest->getRedirectUri();
-
         // The user approved the client, redirect them back with an auth code
         if ($authorizationRequest->isAuthorizationApproved() === true) {
             $authCode = $this->issueAuthCode(
@@ -225,32 +231,19 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
 
             ];
 
-            // TODO: use responseMode, allow for example WebMessage responses
-            $responseMode = $authorizationRequest->getResponseMode();
-
-            $response = new RedirectResponse();
-            $response->setRedirectUri(
-                $this->makeRedirectUri(
-                    $finalRedirectUri,
-                    [
-                        'code'  => $this->encrypt(
-                            json_encode(
-                                $payload
-                            )
-                        ),
-                        'state' => $authorizationRequest->getState(),
-                    ]
+            $code = $this->encrypt(
+                json_encode(
+                    $payload
                 )
             );
 
-
-            return $response;
+            return (new ResponseHandler())->getResponse($authorizationRequest, $code);
         } else {
             // The user denied the client, redirect them back with an error
             throw OAuthServerException::accessDenied(
                 'The user denied the request',
                 $this->makeRedirectUri(
-                    $finalRedirectUri,
+                    $authorizationRequest->getRedirectUri(),
                     [
                         'state' => $authorizationRequest->getState(),
                     ]

@@ -4,6 +4,7 @@ namespace IdaasTests;
 
 use DateInterval;
 use Idaas\OpenID\Grant\AuthCodeGrant;
+use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
 use Idaas\OpenID\Session;
 use LeagueTests\Stubs\AuthCodeEntity;
@@ -40,6 +41,7 @@ class BasicTest extends TestCase
         $grant = new AuthCodeGrant(
             $authCodeRepository,
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock(),
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
