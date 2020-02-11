@@ -12,11 +12,24 @@ class RedirectResponseHandler
     {
         return
             $authenticationRequest->getResponseMode() == null ||
-            $authenticationRequest->getResponseMode() == 'redirect';
+            $authenticationRequest->getResponseMode() == 'fragment' ||
+            $authenticationRequest->getResponseMode() == 'query';
     }
 
     public function generateResponse(AuthenticationRequest $authenticationRequest, $code)
     {
+        $queryDelimiter = '?';
+
+        if ($authenticationRequest->getResponseMode() == 'fragment' ||
+            strpos($authenticationRequest->getResponseType(), 'code') === false
+        ) {
+            $queryDelimiter = '#';
+        }
+
+        if ($authenticationRequest->getResponseMode() == 'query') {
+            $queryDelimiter = '?';
+        }
+
         $response = new RedirectResponse();
         $response->setRedirectUri(
             $this->makeRedirectUri(
@@ -24,7 +37,8 @@ class RedirectResponseHandler
                 [
                     'code'  => $code,
                     'state' => $authenticationRequest->getState(),
-                ]
+                ],
+                $queryDelimiter
             )
         );
         return $response;
