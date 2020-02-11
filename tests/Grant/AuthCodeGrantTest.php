@@ -7,9 +7,11 @@ use DateTime;
 use Idaas\OpenID\Entities\IdToken;
 use Idaas\OpenID\Grant\AuthCodeGrant;
 use Idaas\OpenID\Repositories\AccessTokenRepositoryInterface;
+use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
 use Idaas\OpenID\Session;
 use Idaas\OpenID\SessionInformation;
+use IdaasTests\Stubs\ClaimEntity;
 use IdaasTests\Stubs\StubResponseType;
 use Laminas\Diactoros\ServerRequest;
 use League\OAuth2\Server\CryptKey;
@@ -55,6 +57,7 @@ class AuthCodeGrantTest extends TestCase
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock(),
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -68,6 +71,7 @@ class AuthCodeGrantTest extends TestCase
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock(),
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -100,6 +104,9 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $scope = new ScopeEntity();
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeRepositoryMock->method('getScopeEntityByIdentifier')->willReturn($scope);
@@ -107,6 +114,7 @@ class AuthCodeGrantTest extends TestCase
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -146,9 +154,13 @@ class AuthCodeGrantTest extends TestCase
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeRepositoryMock->method('getScopeEntityByIdentifier')->willReturn($scope);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -187,9 +199,13 @@ class AuthCodeGrantTest extends TestCase
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeRepositoryMock->method('getScopeEntityByIdentifier')->willReturn($scope);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -225,9 +241,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -254,9 +274,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -283,9 +307,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -309,9 +337,13 @@ class AuthCodeGrantTest extends TestCase
     {
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+        
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -333,9 +365,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn(null);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -360,9 +396,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -388,9 +428,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -420,9 +464,13 @@ class AuthCodeGrantTest extends TestCase
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeRepositoryMock->method('getScopeEntityByIdentifier')->willReturn($scope);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -457,9 +505,13 @@ class AuthCodeGrantTest extends TestCase
         $authCodeRepository = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
         $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $authCodeRepository,
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -480,9 +532,13 @@ class AuthCodeGrantTest extends TestCase
         $authCodeRepository = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
         $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $authCodeRepository,
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -521,6 +577,7 @@ class AuthCodeGrantTest extends TestCase
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $refreshTokenRepositoryMock,
+            $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock(),
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -594,6 +651,7 @@ class AuthCodeGrantTest extends TestCase
         $authCodeGrant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $refreshTokenRepositoryMock,
+            $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock(),
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -671,6 +729,7 @@ class AuthCodeGrantTest extends TestCase
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock(),
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -743,9 +802,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(null);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -819,9 +882,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -899,9 +966,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -965,9 +1036,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1014,9 +1089,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1067,9 +1146,13 @@ class AuthCodeGrantTest extends TestCase
         $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
         $refreshTokenRepositoryMock = $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock();
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1108,9 +1191,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn(new ClientEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1160,9 +1247,13 @@ class AuthCodeGrantTest extends TestCase
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn(new ClientEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1225,9 +1316,13 @@ class AuthCodeGrantTest extends TestCase
         $authCodeRepositoryMock = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
         $authCodeRepositoryMock->method('isAuthCodeRevoked')->willReturn(true);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $authCodeRepositoryMock,
             $refreshTokenRepositoryMock,
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1294,9 +1389,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock = $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock();
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1362,9 +1461,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock = $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock();
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1421,9 +1524,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1496,9 +1603,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1571,9 +1682,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1646,9 +1761,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1721,9 +1840,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willReturnSelf();
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1787,9 +1910,13 @@ class AuthCodeGrantTest extends TestCase
         $authCodeRepository->expects($this->at(0))->method('persistNewAuthCode')->willThrowException(UniqueTokenIdentifierConstraintViolationException::create());
         $authCodeRepository->expects($this->at(1))->method('persistNewAuthCode');
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $authCodeRepository,
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1813,9 +1940,13 @@ class AuthCodeGrantTest extends TestCase
         $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
         $authCodeRepository->method('persistNewAuthCode')->willThrowException(OAuthServerException::serverError('something bad happened'));
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $authCodeRepository,
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1840,9 +1971,13 @@ class AuthCodeGrantTest extends TestCase
         $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
         $authCodeRepository->method('persistNewAuthCode')->willThrowException(UniqueTokenIdentifierConstraintViolationException::create());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $authCodeRepository,
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1876,9 +2011,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->expects($this->at(0))->method('persistNewRefreshToken')->willThrowException(UniqueTokenIdentifierConstraintViolationException::create());
         $refreshTokenRepositoryMock->expects($this->at(1))->method('persistNewRefreshToken');
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $refreshTokenRepositoryMock,
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -1951,9 +2090,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willThrowException(OAuthServerException::serverError('something bad happened'));
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $refreshTokenRepositoryMock,
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -2029,9 +2172,13 @@ class AuthCodeGrantTest extends TestCase
         $refreshTokenRepositoryMock->method('getNewRefreshToken')->willReturn(new RefreshTokenEntity());
         $refreshTokenRepositoryMock->method('persistNewRefreshToken')->willThrowException(UniqueTokenIdentifierConstraintViolationException::create());
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $refreshTokenRepositoryMock,
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -2089,9 +2236,14 @@ class AuthCodeGrantTest extends TestCase
 
     public function testCompleteAuthorizationRequestNoUser()
     {
+
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
@@ -2114,9 +2266,13 @@ class AuthCodeGrantTest extends TestCase
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeRepositoryMock->method('getScopeEntityByIdentifier')->willReturn($scope);
 
+        $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
+        $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
+            $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
