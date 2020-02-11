@@ -15,5 +15,5 @@ interface UserRepositoryInterface extends LeagueUserRepositoryInterface
     /**
      * Returns an associative array with attribute (claim) keys and values
      */
-    public function getAttributes(UserEntityInterface $user, $attributes, $scopes);
+    public function getAttributes(string $userId, $claims, $scopes);
 }
