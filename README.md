@@ -1,6 +1,7 @@
 # PHP OpenID Connect Server
 
 ![](https://github.com/arietimmerman/openid-server/workflows/CI/badge.svg)
+![](https://img.shields.io/badge/license-AGPL--3.0-green)
 
 This is an OpenID Connect Server written in PHP, built on top of [thephpleague/oauth2-server](https://github.com/thephpleague/oauth2-server).
 
@@ -9,6 +10,8 @@ It is used by [idaas.nl](https://www.idaas.nl/): (not) yet another identity as a
 This library supports everything that is supported by `thephpleague/oauth2-server`, plus the following specifications
 
 * [OpenID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html)
+
+This library was created by [Arie Timmerman](https://github.com/arietimmerman).
 
 ## Installation
 
