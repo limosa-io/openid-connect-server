@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "237424d7fd6d6da5324ffef5cf7d8759",
+    "content-hash": "4db8b88cb6ead57180a1d2c56b2455e1",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -180,12 +180,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/oauth2-server.git",
-                "reference": "d1376a116011f0a8a2b1f48d6a121cc98c96f85d"
+                "reference": "e6af93c58a625dc5e478e8e5d3d7b4ca97129a44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/d1376a116011f0a8a2b1f48d6a121cc98c96f85d",
-                "reference": "d1376a116011f0a8a2b1f48d6a121cc98c96f85d",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/e6af93c58a625dc5e478e8e5d3d7b4ca97129a44",
+                "reference": "e6af93c58a625dc5e478e8e5d3d7b4ca97129a44",
                 "shasum": ""
             },
             "require": {
@@ -249,7 +249,7 @@
                 "secure",
                 "server"
             ],
-            "time": "2020-02-05T15:21:57+00:00"
+            "time": "2020-02-11T19:52:58+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -756,12 +756,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "6a88d1ae42db82ae8274bbf55880d0876ee24323"
+                "reference": "edea3e869367921987704325b997a80cdaea6d66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/6a88d1ae42db82ae8274bbf55880d0876ee24323",
-                "reference": "6a88d1ae42db82ae8274bbf55880d0876ee24323",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/edea3e869367921987704325b997a80cdaea6d66",
+                "reference": "edea3e869367921987704325b997a80cdaea6d66",
                 "shasum": ""
             },
             "require": {
@@ -801,7 +801,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-02-05T20:17:02+00:00"
+            "time": "2020-02-12T20:05:04+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -809,12 +809,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "a748970492a3fc0c12a823e27c520cf9820b90fb"
+                "reference": "70d7abb1fdad964379676d629923de0dd1918f4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/a748970492a3fc0c12a823e27c520cf9820b90fb",
-                "reference": "a748970492a3fc0c12a823e27c520cf9820b90fb",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/70d7abb1fdad964379676d629923de0dd1918f4f",
+                "reference": "70d7abb1fdad964379676d629923de0dd1918f4f",
                 "shasum": ""
             },
             "require": {
@@ -847,7 +847,7 @@
                 }
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "time": "2020-02-05T20:18:28+00:00"
+            "time": "2020-02-14T12:50:24+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -1170,12 +1170,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "2f0ab996ca57beb9598bb6429bdaf94daddb1f9e"
+                "reference": "aa929c8b2fd1416e0c926da7563f02b6524ebc00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2f0ab996ca57beb9598bb6429bdaf94daddb1f9e",
-                "reference": "2f0ab996ca57beb9598bb6429bdaf94daddb1f9e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/aa929c8b2fd1416e0c926da7563f02b6524ebc00",
+                "reference": "aa929c8b2fd1416e0c926da7563f02b6524ebc00",
                 "shasum": ""
             },
             "require": {
@@ -1245,7 +1245,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-01-23T15:44:04+00:00"
+            "time": "2020-02-16T20:19:34+00:00"
         },
         {
             "name": "psr/http-factory",
@@ -2014,16 +2014,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925"
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/573381c0a64f155a0d9a23f4b0c797194805b925",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
                 "shasum": ""
             },
             "require": {
@@ -2058,14 +2058,12 @@
                 "check",
                 "validate"
             ],
-            "time": "2019-11-24T13:36:37+00:00"
+            "time": "2020-02-14T12:15:55+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "league/oauth2-server": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

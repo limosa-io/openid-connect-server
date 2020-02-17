@@ -9,7 +9,7 @@
         }
     },
     "require": {
-        "league/oauth2-server": "dev-master"
+        "league/oauth2-server": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
