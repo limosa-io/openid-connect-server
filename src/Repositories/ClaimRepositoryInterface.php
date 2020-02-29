@@ -19,5 +19,10 @@ interface ClaimRepositoryInterface extends RepositoryInterface
      */
     public function getClaimEntityByIdentifier($identifier, $type, $essential);
 
-    public function claimsRequestToEntities(string $json = null);
+    /**
+     * @return ClaimEntityInterface[]
+     */
+    public function getClaimsByScope(string $scope) : iterable;
+
+    public function claimsRequestToEntities(array $json = null);
 }

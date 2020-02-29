@@ -10,10 +10,15 @@ interface UserRepositoryInterface extends LeagueUserRepositoryInterface
     /**
      * Return the claims related to a scope
      */
-    public function getClaims($scope);
+    public function getClaims(ClaimRepositoryInterface $claimRepository, $scope);
 
     /**
      * Returns an associative array with attribute (claim) keys and values
      */
-    public function getAttributes(string $userId, $claims, $scopes);
+    public function getAttributes(UserEntityInterface $userEntity, $claims, $scopes);
+
+    /**
+     * Return User
+     */
+    public function getUserByIdentifier($identifier): ?UserEntityInterface;
 }

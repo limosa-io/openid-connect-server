@@ -2,38 +2,49 @@
 
 namespace Idaas\OpenID;
 
-use ArieTimmerman\Passport\TokenCache;
-use Illuminate\Http\Request;
+use Idaas\OpenID\Repositories\AccessTokenRepositoryInterface;
+use Idaas\OpenID\Repositories\UserRepositoryInterface;
+use League\OAuth2\Server\ResourceServer;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class UserInfo
 {
-    public function respondToUserInfoRequest(
-        Request $request,
-        UserRepository $userRepositoryOIDC
+
+    protected $userRepository;
+    protected $tokenRepository;
+    protected $resourceServer;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        AccessTokenRepositoryInterface $tokenRepository,
+        ResourceServer $resourceServer
     ) {
-        return resolve(TokenCache::class)->rememberUserInfo($request->user()->token()->id, function () use ($request, $userRepositoryOIDC) {
-            $token = $request->user()->token();
-            $scopes = $token->scopes;
+        $this->userRepository = $userRepository;
+        $this->tokenRepository = $tokenRepository;
+        $this->resourceServer = $resourceServer;
+    }
 
-            $claims = $token->claims;
+    public function respondToUserInfoRequest(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ) {
 
-            if (empty($claims)) {
-                $claims = [];
-            }
+        $validated = $this->resourceServer->validateAuthenticatedRequest($request);
 
-            if (!isset($claims['userinfo'])) {
-                $claims['userinfo'] = [];
-            }
+        $validated->getAttribute('oauth_access_token_id');
+        $validated->getAttribute('oauth_user_id');
 
-            foreach ($scopes as $scope) {
-                foreach ($userRepositoryOIDC->getClaims($scope) as $claim) {
-                    if (!isset($claims['userinfo'][$claim])) {
-                        $claims['userinfo'][$claim] = null;
-                    }
-                }
-            }
+        $token = $this->tokenRepository->getAccessToken($validated->getAttribute('oauth_access_token_id'));
 
-            return $request->user()->toUserInfo($claims, $scopes);
-        });
+        return $response->getBody()->write(\json_encode(
+            $this->userRepository->getAttributes(
+                $this->userRepository->getUserByIdentifier(
+                    $validated->getAttribute('oauth_user_id')
+                ),
+                $token->getClaims(),
+                $token->getScopes()
+            )
+        ));
     }
 }
