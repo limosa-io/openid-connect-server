@@ -3,6 +3,7 @@
 namespace Idaas\OpenID\Grant;
 
 use Idaas\OpenID\Entities\IdToken;
+use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\Repositories\UserRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
 use Idaas\OpenID\Session;
@@ -23,17 +24,25 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
     /**
      * @var UserRepositoryInterface
      */
-    private $userRepository;
+    protected $userRepository;
+
+    protected $claimRepositoryInterface;
 
     /**
      * @param \DateInterval $accessTokenTTL
      * @param string $queryDelimiter
      */
-    public function __construct(UserRepositoryInterface $userRepository, \DateInterval $accessTokenTTL, \DateInterval $idTokenTTL, $queryDelimiter = '#')
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        ClaimRepositoryInterface $claimRepositoryInterface,
+        \DateInterval $accessTokenTTL,
+        \DateInterval $idTokenTTL,
+        $queryDelimiter = '#'
+    ) {
         parent::__construct($accessTokenTTL, $queryDelimiter);
 
         $this->userRepository = $userRepository;
+        $this->claimRepositoryInterface = $claimRepositoryInterface;
 
         $this->accessTokenTTL = $accessTokenTTL;
         $this->idTokenTTL = $idTokenTTL;
@@ -146,8 +155,12 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
                 $scopes = [];
 
                 foreach ($authorizationRequest->getScopes() as $scope) {
-                    if (count($this->userRepository->getClaims($scope->getIdentifier())) > 0) {
-                        array_push($claimsRequested, ...$this->userRepository->getClaims($scope->getIdentifier()));
+                    $claims = $this->userRepository->getClaims(
+                        $this->claimRepositoryInterface,
+                        $scope->getIdentifier()
+                    );
+                    if (count($claims) > 0) {
+                        array_push($claimsRequested, ...$claims);
                     }
                 }
 
