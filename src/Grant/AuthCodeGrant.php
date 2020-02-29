@@ -6,7 +6,6 @@ use Idaas\OpenID\Entities\IdToken;
 use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
 use Idaas\OpenID\ResponseHandler;
-use Idaas\OpenID\ResponseTypes\BearerTokenResponse;
 use Idaas\OpenID\Session;
 use Idaas\OpenID\SessionInformation;
 use League\OAuth2\Server\Entities\UserEntityInterface;
@@ -14,7 +13,6 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
-use League\OAuth2\Server\ResponseTypes\RedirectResponse;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -118,6 +116,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
 
         $result->setPrompt($this->getQueryStringParameter('prompt', $request));
         $result->setResponseMode($this->getQueryStringParameter('response_mode', $request));
+        $result->setResponseType($this->getQueryStringParameter('response_type', $request));
 
         if (!empty($uiLocales = $this->getQueryStringParameter('ui_locales', $request))) {
             $result->setUILocales(explode(' ', $uiLocales));

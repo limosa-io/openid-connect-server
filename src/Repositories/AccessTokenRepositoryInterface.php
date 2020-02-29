@@ -9,8 +9,7 @@ interface AccessTokenRepositoryInterface extends LeagueAccessTokenRepositoryInte
 {
 
     /**
-     * 
-     * @param array $claims []
+     * @param array $claims ClaimEntityInterface[]
      */
     public function storeClaims($id, array $claims);
 
