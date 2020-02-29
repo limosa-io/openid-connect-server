@@ -48,6 +48,9 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $this->authCodeTTL = $authCodeTTL;
         $this->idTokenTTL = $idTokenTTL;
         $this->session = $session;
+
+        // TODO: Should be easily configurable
+        $this->disableRequireCodeChallengeForPublicClients();
     }
 
     public function getIdentifier()

@@ -164,13 +164,13 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
                     }
                 }
 
-                $claims = $this->userRepository->getAttributes(
+                $attributes = $this->userRepository->getAttributes(
                     $authorizationRequest->getUser(),
                     $claimsRequested,
                     $scopes
                 );
 
-                foreach ($claims as $key => $value) {
+                foreach ($attributes as $key => $value) {
                     $idToken->addExtra($key, $value);
                 }
             }
