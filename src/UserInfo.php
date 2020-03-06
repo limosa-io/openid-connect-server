@@ -61,7 +61,7 @@ class UserInfo
                 $token->getScopes()
             )
         ));
-        
-        return $response;
+
+        return $response->withAddedHeader('Content-Type', 'application/json');
     }
 }
