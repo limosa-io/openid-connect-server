@@ -189,7 +189,8 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
             //Only add the access token and related parameters if requested
             //TODO: Check if OpenID Connect flow is allowed if only a token is requested.
             if ($authorizationRequest->getResponseType() == 'id_token token' || $authorizationRequest->getResponseType() == 'token') {
-                $parameters['access_token'] = (string) $accessToken->convertToJWT($this->privateKey);
+                $accessToken->setPrivateKey($this->privateKey);
+                $parameters['access_token'] = (string) $accessToken;
                 $parameters['token_type'] = 'Bearer';
                 $parameters['expires_in'] = $accessToken->getExpiryDateTime()->getTimestamp() - (new \DateTime())->getTimestamp();
             }

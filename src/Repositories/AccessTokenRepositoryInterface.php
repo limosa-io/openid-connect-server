@@ -3,6 +3,7 @@
 namespace Idaas\OpenID\Repositories;
 
 use Idaas\OpenID\Entities\AccessTokenEntityInterface;
+use Laravel\Passport\Bridge\AccessToken;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface as LeagueAccessTokenRepositoryInterface;
 
 interface AccessTokenRepositoryInterface extends LeagueAccessTokenRepositoryInterface
@@ -11,7 +12,7 @@ interface AccessTokenRepositoryInterface extends LeagueAccessTokenRepositoryInte
     /**
      * @param array $claims ClaimEntityInterface[]
      */
-    public function storeClaims($id, array $claims);
+    public function storeClaims(AccessToken $token, array $claims);
 
     /**
      * Retrieve an access token.
