@@ -57,7 +57,7 @@ class UserInfo
                 $this->userRepository->getUserByIdentifier(
                     $validated->getAttribute('oauth_user_id')
                 ),
-                $claims,
+                $claimsRequested,
                 $token->getScopes()
             )
         ));
