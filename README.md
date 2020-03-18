@@ -18,3 +18,11 @@ This library was created by [Arie Timmerman](https://github.com/arietimmerman).
 ~~~
 composer require nl.idaas/openid-server
 ~~~
+
+## Examples
+
+TODO:
+
+## Usages
+
+* [Laravel OpenID Connect Server](https://github.com/arietimmerman/laravel-openid-connect-server)
