@@ -46,7 +46,7 @@ class UserInfo
         foreach ($token->getScopes() as $scope) {
             $claims = $this->userRepository->getClaims(
                 $this->claimRepository,
-                $scope->getIdentifier()
+                $scope
             );
             if (count($claims) > 0) {
                 array_push($claimsRequested, ...$claims);
