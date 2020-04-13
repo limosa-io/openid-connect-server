@@ -40,7 +40,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         Session $session,
         \DateInterval $authCodeTTL,
         \DateInterval $idTokenTTL,
-        $disableRequireCodeChallengeForPublicClients = false
+        $disableRequireCodeChallengeForPublicClients = true
     ) {
         parent::__construct($authCodeRepository, $refreshTokenRepository, $authCodeTTL);
 
@@ -95,7 +95,9 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
      */
     public function validateAuthorizationRequest(ServerRequestInterface $request)
     {
+
         $result = parent::validateAuthorizationRequest($request);
+        
         $redirectUri = $this->getQueryStringParameter(
             'redirect_uri',
             $request
