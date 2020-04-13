@@ -3,6 +3,7 @@
 namespace Idaas\OpenID\Repositories;
 
 use Idaas\OpenID\Entities\ClaimEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\RepositoryInterface;
 
 /**
@@ -22,7 +23,7 @@ interface ClaimRepositoryInterface extends RepositoryInterface
     /**
      * @return ClaimEntityInterface[]
      */
-    public function getClaimsByScope(string $scope) : iterable;
+    public function getClaimsByScope(ScopeEntityInterface $scope) : iterable;
 
     public function claimsRequestToEntities(array $json = null);
 }
