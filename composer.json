@@ -32,8 +32,5 @@
             "name": "Arie Timmerman",
             "email": "arietimmerman@gmail.com"
         }
-    ],
-    "scripts": {
-        "post-install-cmd": "chmod 660 /home/runner/work/openid-connect-server/openid-connect-server/vendor/league/oauth2-server/tests/Stubs/private.key"
-    }
+    ]
 }
