@@ -31,7 +31,7 @@ class BasicTest extends TestCase
             $clientRepository,
             $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock(),
-            'file://' . __DIR__ . '/../vendor/league/oauth2-server/tests/Stubs/private.key',
+            'file://' . __DIR__ . '/../Stubs/private.key',
             'file://' . __DIR__ . '/../vendor/league/oauth2-server/tests/Stubs/public.key'
         );
 
