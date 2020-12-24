@@ -2224,7 +2224,7 @@ class AuthCodeGrantTest extends TestCase
             ]
         );
 
-        $this->expectException(\League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException::class);
+        $this->expectException(UniqueTokenIdentifierConstraintViolationException::class);
         $this->expectExceptionCode(100);
 
         /** @var StubResponseType $response */
@@ -2236,7 +2236,6 @@ class AuthCodeGrantTest extends TestCase
 
     public function testCompleteAuthorizationRequestNoUser()
     {
-
         $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
         $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
 
@@ -2275,7 +2274,8 @@ class AuthCodeGrantTest extends TestCase
             $claimRepositoryMock,
             new Session,
             new DateInterval('PT10M'),
-            new DateInterval('PT10M')
+            new DateInterval('PT10M'),
+            false
         );
 
         $grant->setClientRepository($clientRepositoryMock);
