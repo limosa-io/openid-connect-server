@@ -34,6 +34,6 @@
         }
     ],
     "scripts": {
-        "post-install-cmd": "ls ./vendor/league/oauth2-server/tests/Stubs && chmod 660 ./vendor/league/oauth2-server/tests/Stubs/private.key"
+        "post-install-cmd": "chmod 660 /home/runner/work/openid-connect-server/openid-connect-server/vendor/league/oauth2-server/tests/Stubs/private.key"
     }
 }
