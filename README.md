@@ -1,7 +1,7 @@
 ![](https://github.com/arietimmerman/openid-server/workflows/CI/badge.svg)
 ![](https://img.shields.io/badge/license-AGPL--3.0-green)
-[![Latest Stable Version](https://poser.pugx.org/arietimmerman/openid-server/v/stable)](https://packagist.org/packages/arietimmerman/laravel-url-shortener)
-[![Total Downloads](https://poser.pugx.org/arietimmerman/laravel-url-shortener/downloads)](https://packagist.org/packages/arietimmerman/laravel-url-shortener)
+[![Latest Stable Version](https://poser.pugx.org/nl.idaas/openid-server/v/stable)](https://packagist.org/packages/nl.idaas/openid-server)
+[![Total Downloads](https://poser.pugx.org/nl.idaas/openid-server/downloads)](https://packagist.org/packages/nl.idaas/openid-server)
 
 # PHP OpenID Connect Server
 
