@@ -3,6 +3,7 @@
 namespace Idaas\OpenID\Grant;
 
 use Idaas\OpenID\Entities\IdToken;
+use Idaas\OpenID\Repositories\AccessTokenRepositoryInterface;
 use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
 use Idaas\OpenID\ResponseHandler;
@@ -27,6 +28,11 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     protected $session;
 
     protected $claimRepository;
+
+    /**
+     * @var AccessTokenRepositoryInterface
+     */
+    protected $accessTokenRepository;
 
     /**
      * @param AuthCodeRepositoryInterface     $authCodeRepository
@@ -95,7 +101,6 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
      */
     public function validateAuthorizationRequest(ServerRequestInterface $request)
     {
-
         $result = parent::validateAuthorizationRequest($request);
         
         $redirectUri = $this->getQueryStringParameter(
@@ -155,6 +160,9 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         ResponseTypeInterface $responseType,
         \DateInterval $accessTokenTTL
     ) {
+        /**
+         * @var BearerTokenResponse $result
+         */
         $result = parent::respondToAccessTokenRequest($request, $responseType, $accessTokenTTL);
 
         $encryptedAuthCode = $this->getRequestParameter('code', $request, null);
@@ -169,13 +177,14 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $idToken->setSubject($authCodePayload->user_id);
         $idToken->setAudience($authCodePayload->client_id);
         $idToken->setExpiration((new \DateTime())->add($this->idTokenTTL));
-        $idToken->setIat(new \DateTime());
+        $idToken->setIat(new \DateTimeImmutable());
 
         $idToken->setAuthTime(new \DateTime('@' . $authCodePayload->auth_time));
         $idToken->setNonce($authCodePayload->nonce);
 
         if ($authCodePayload->claims) {
             $accessToken = $result->getAccessToken();
+
             $this->accessTokenRepository->storeClaims($accessToken, $authCodePayload->claims);
         }
 

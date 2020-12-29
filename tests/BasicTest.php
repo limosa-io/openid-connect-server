@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class BasicTest extends TestCase
 {
-
     public function testResponse()
     {
         $clientRepository = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
@@ -59,6 +58,5 @@ class BasicTest extends TestCase
             ResponseInterface::class,
             $server->completeAuthorizationRequest($authRequest, new Response)
         );
-
     }
 }

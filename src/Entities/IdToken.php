@@ -2,10 +2,11 @@
 
 namespace Idaas\OpenID\Entities;
 
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
+use DateTimeImmutable;
+use Lcobucci\JWT\Configuration;
 use League\OAuth2\Server\CryptKey;
+use Lcobucci\JWT\Signer;
+use Lcobucci\JWT\Signer\Key\LocalFileReference;
 
 class IdToken
 {
@@ -24,31 +25,36 @@ class IdToken
 
     public function __construct()
     {
-        $this->iat = time();
-        $this->authTime = time();
+        $this->iat = new DateTimeImmutable();
+        $this->authTime = new DateTimeImmutable();
     }
 
     public function convertToJWT(CryptKey $privateKey)
     {
+        $configuration = Configuration::forAsymmetricSigner(
+            // You may use RSA or ECDSA and all their variations (256, 384, and 512)
+            new Signer\Rsa\Sha256(),
+            LocalFileReference::file($privateKey->getKeyPath()),
+            LocalFileReference::file($privateKey->getKeyPath())
+            // You may also override the JOSE encoder/decoder if needed by providing extra arguments here
+        );
 
-        $token = (new Builder())
-
-            ->setHeader('kid', method_exists($privateKey, 'getKid') ? $privateKey->getKid() : null)
-            ->setIssuer($this->getIssuer())
-            ->setSubject($this->getSubject())
-            ->setAudience($this->getAudience())
-            ->setExpiration($this->getExpiration()->getTimestamp())
-            ->setIssuedAt($this->getIat()->getTimestamp())
-            ->set('auth_time', $this->getAuthTime()->getTimestamp())
-            ->set('nonce', $this->getNonce());
+        $token = $configuration->builder()
+            ->withHeader('kid', method_exists($privateKey, 'getKid') ? $privateKey->getKid() : null)
+            ->issuedBy($this->getIssuer())
+            ->identifiedBy($this->getSubject())
+            ->permittedFor($this->getAudience())
+            ->relatedTo($this->getSubject())
+            ->expiresAt(DateTimeImmutable::createFromMutable($this->getExpiration()))
+            ->issuedAt($this->getIat())
+            ->withClaim('auth_time', $this->getAuthTime()->getTimestamp())
+            ->withClaim('nonce', $this->getNonce());
 
         foreach ($this->extra as $key => $value) {
-            $token->set($key, $value);
+            $token->withClaim($key, $value);
         }
 
-        return $token
-            ->sign(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()))
-            ->getToken();
+        return $token->getToken($configuration->signer(), $configuration->signingKey())->toString();
     }
 
 
@@ -125,7 +131,7 @@ class IdToken
      *
      * @return  self
      */
-    public function setIat(\DateTime $iat)
+    public function setIat(\DateTimeImmutable $iat)
     {
         $this->iat = $iat;
 

@@ -21,5 +21,4 @@ interface AccessTokenRepositoryInterface extends LeagueAccessTokenRepositoryInte
      * @return AccessTokenEntityInterface
      */
     public function getAccessToken($tokenId);
-
 }
