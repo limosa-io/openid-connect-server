@@ -9,12 +9,6 @@ class CryptKey extends BaseCryptKey
     public $x509 = null;
     public $kid = null;
 
-    public function __construct($keyPath)
-    {
-        $this->keyPath = $keyPath;
-        $this->passPhrase = null;
-    }
-
     public function getKid()
     {
         return $this->kid;

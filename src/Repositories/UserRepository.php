@@ -2,11 +2,10 @@
 
 namespace Idaas\OpenID\Repositories;
 
-use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\Repositories\UserRepositoryInterface;
-use UserRepositoryTrait;
+use Idaas\OpenID\Repositories\UserRepositoryTrait;
 
-abstract class UserRepositoy implements UserRepositoryInterface
+abstract class UserRepository implements UserRepositoryInterface
 {
     use UserRepositoryTrait;
 }

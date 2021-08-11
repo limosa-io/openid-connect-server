@@ -2,11 +2,12 @@
 
 namespace Idaas\OpenID\Entities;
 
+use DateTime;
 use DateTimeImmutable;
-use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
 use League\OAuth2\Server\CryptKey;
-use Lcobucci\JWT\Signer;
-use Lcobucci\JWT\Signer\Key\LocalFileReference;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Key\InMemory;
 
 class IdToken
 {
@@ -25,28 +26,26 @@ class IdToken
 
     public function __construct()
     {
-        $this->iat = new DateTimeImmutable();
-        $this->authTime = new DateTimeImmutable();
+        $this->iat = new DateTime();
+        $this->authTime = new DateTime();
     }
 
     public function convertToJWT(CryptKey $privateKey)
     {
-        $configuration = Configuration::forAsymmetricSigner(
-            // You may use RSA or ECDSA and all their variations (256, 384, and 512)
-            new Signer\Rsa\Sha256(),
-            LocalFileReference::file($privateKey->getKeyPath()),
-            LocalFileReference::file($privateKey->getKeyPath())
-            // You may also override the JOSE encoder/decoder if needed by providing extra arguments here
+        
+        $config = Configuration::forAsymmetricSigner(
+            new Sha256(),
+            InMemory::plainText($privateKey->getKeyContents()),
+            InMemory::plainText($privateKey->getKeyContents())
         );
 
-        $token = $configuration->builder()
+        $token = $config->builder()
             ->withHeader('kid', method_exists($privateKey, 'getKid') ? $privateKey->getKid() : null)
             ->issuedBy($this->getIssuer())
-            ->identifiedBy($this->getSubject())
+            ->withHeader('sub', $this->getSubject())
             ->permittedFor($this->getAudience())
-            ->relatedTo($this->getSubject())
             ->expiresAt(DateTimeImmutable::createFromMutable($this->getExpiration()))
-            ->issuedAt($this->getIat())
+            ->issuedAt(DateTimeImmutable::createFromMutable($this->getIat()))
             ->withClaim('auth_time', $this->getAuthTime()->getTimestamp())
             ->withClaim('nonce', $this->getNonce());
 
@@ -54,7 +53,7 @@ class IdToken
             $token->withClaim($key, $value);
         }
 
-        return $token->getToken($configuration->signer(), $configuration->signingKey())->toString();
+        return $token->getToken($config->signer(), $config->signingKey());
     }
 
 
