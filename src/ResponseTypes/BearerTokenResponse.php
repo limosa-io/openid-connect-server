@@ -45,7 +45,7 @@ class BearerTokenResponse extends LeagueBearerTokenResponse implements ResponseT
             $this->setIdToken(null);
 
             return [
-                'id_token' => (string) $idToken
+                'id_token' => $idToken->toString()
             ];
         } else {
             return [];
