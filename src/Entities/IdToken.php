@@ -26,8 +26,8 @@ class IdToken
 
     public function __construct()
     {
-        $this->iat = new DateTime();
-        $this->authTime = new DateTime();
+        $this->iat = new DateTimeImmutable();
+        $this->authTime = new DateTimeImmutable();
     }
 
     public function convertToJWT(CryptKey $privateKey)
@@ -44,8 +44,8 @@ class IdToken
             ->issuedBy($this->getIssuer())
             ->withHeader('sub', $this->getSubject())
             ->permittedFor($this->getAudience())
-            ->expiresAt(DateTimeImmutable::createFromMutable($this->getExpiration()))
-            ->issuedAt(DateTimeImmutable::createFromMutable($this->getIat()))
+            ->expiresAt($this->getExpiration())
+            ->issuedAt($this->getIat())
             ->withClaim('auth_time', $this->getAuthTime()->getTimestamp())
             ->withClaim('nonce', $this->getNonce());
 
@@ -100,7 +100,7 @@ class IdToken
     /**
      * Get the value of expiration
      */
-    public function getExpiration()
+    public function getExpiration() : DateTimeImmutable
     {
         return $this->expiration;
     }
@@ -110,7 +110,7 @@ class IdToken
      *
      * @return  self
      */
-    public function setExpiration(\DateTime $expiration)
+    public function setExpiration(\DateTimeImmutable $expiration)
     {
         $this->expiration = $expiration;
 

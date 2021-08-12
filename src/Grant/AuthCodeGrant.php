@@ -2,6 +2,7 @@
 
 namespace Idaas\OpenID\Grant;
 
+use DateTimeImmutable;
 use Idaas\OpenID\Entities\IdToken;
 use Idaas\OpenID\Repositories\AccessTokenRepositoryInterface;
 use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
@@ -176,7 +177,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $idToken->setIssuer($this->issuer);
         $idToken->setSubject($authCodePayload->user_id);
         $idToken->setAudience($authCodePayload->client_id);
-        $idToken->setExpiration((new \DateTime())->add($this->idTokenTTL));
+        $idToken->setExpiration(DateTimeImmutable::createFromMutable((new \DateTime())->add($this->idTokenTTL)));
         $idToken->setIat(new \DateTimeImmutable());
 
         $idToken->setAuthTime(new \DateTime('@' . $authCodePayload->auth_time));

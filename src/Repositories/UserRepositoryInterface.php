@@ -11,7 +11,7 @@ interface UserRepositoryInterface extends LeagueUserRepositoryInterface
 {
     /**
      * Return the claims related to a scope
-     * @return ClaimEntityInterface
+     * @return ClaimEntityInterface[]
      */
     public function getClaims(ClaimRepositoryInterface $claimRepository, ScopeEntityInterface $scope);
 
