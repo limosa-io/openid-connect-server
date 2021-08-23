@@ -53,7 +53,7 @@ class UserInfo
             }
         }
         $response->getBody()->write(\json_encode(
-            $this->userRepository->getAttributes(
+            $this->userRepository->getUserInfoAttributes(
                 $this->userRepository->getUserByIdentifier(
                     $validated->getAttribute('oauth_user_id')
                 ),
