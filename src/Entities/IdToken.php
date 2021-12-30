@@ -2,7 +2,6 @@
 
 namespace Idaas\OpenID\Entities;
 
-use DateTime;
 use DateTimeImmutable;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use League\OAuth2\Server\CryptKey;
@@ -43,6 +42,7 @@ class IdToken
             ->withHeader('kid', method_exists($privateKey, 'getKid') ? $privateKey->getKid() : null)
             ->issuedBy($this->getIssuer())
             ->withHeader('sub', $this->getSubject())
+            ->relatedTo($this->getSubject())
             ->permittedFor($this->getAudience())
             ->expiresAt($this->getExpiration())
             ->issuedAt($this->getIat())
