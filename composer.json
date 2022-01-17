@@ -9,7 +9,8 @@
         }
     },
     "require": {
-        "league/oauth2-server": "^7|^8"
+        "league/oauth2-server": "^8",
+        "nyholm/psr7": "^1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",

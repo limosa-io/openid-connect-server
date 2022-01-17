@@ -13,7 +13,7 @@ use Idaas\OpenID\Session;
 use Idaas\OpenID\SessionInformation;
 use IdaasTests\Stubs\ClaimEntity;
 use IdaasTests\Stubs\StubResponseType;
-use Laminas\Diactoros\ServerRequest;
+use Nyholm\Psr7\ServerRequest;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
