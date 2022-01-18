@@ -198,7 +198,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
             }
 
             $parameters['state'] = $authorizationRequest->getState();
-            $parameters['id_token'] = (string) $idToken->convertToJWT($this->privateKey);
+            $parameters['id_token'] = (string) $idToken->convertToJWT($this->privateKey)->toString();
 
             $response = new RedirectResponse();
             $response->setRedirectUri(

@@ -54,7 +54,7 @@ class IdToken
             $token->withClaim($key, $value);
         }
 
-        return $token->getToken($config->signer(), $config->signingKey())->toString();
+        return $token->getToken($config->signer(), $config->signingKey());
     }
 
 

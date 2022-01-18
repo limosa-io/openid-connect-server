@@ -36,7 +36,7 @@ class IDTokenTest extends TestCase
         $idToken->setAmr('amr');
         $idToken->setAcr('acr');
 
-        $token = $idToken->convertToJWT($cryptKey);
+        $token = $idToken->convertToJWT($cryptKey)->toString();
 
         $this->assertNotNull($token);
         $this->assertIsString($token);
