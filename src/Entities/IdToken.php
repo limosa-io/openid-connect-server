@@ -46,6 +46,7 @@ class IdToken
             ->permittedFor($this->getAudience())
             ->expiresAt($this->getExpiration())
             ->issuedAt($this->getIat())
+            ->identifiedBy("123")
             ->withClaim('auth_time', $this->getAuthTime()->getTimestamp())
             ->withClaim('nonce', $this->getNonce());
 
@@ -53,7 +54,7 @@ class IdToken
             $token->withClaim($key, $value);
         }
 
-        return $token->getToken($config->signer(), $config->signingKey());
+        return $token->getToken($config->signer(), $config->signingKey())->toString();
     }
 
 

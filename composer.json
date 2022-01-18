@@ -9,7 +9,8 @@
         }
     },
     "require": {
-        "league/oauth2-server": "^7|^8"
+        "league/oauth2-server": "^8",
+        "nyholm/psr7": "^1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
@@ -33,8 +34,5 @@
             "email": "arietimmerman@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
-    "scripts": {
-        "post-install-cmd": "chmod 600 ./vendor/league/oauth2-server/tests/Stubs/private.key"
-    }
+    "minimum-stability": "stable"
 }
