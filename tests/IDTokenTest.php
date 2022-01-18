@@ -17,6 +17,9 @@ class IDTokenTest extends TestCase
         $cryptKey->method('getKeyPath')
             ->willReturn(__DIR__ . '/../vendor/league/oauth2-server/tests/Stubs/private.key');
 
+        $cryptKey->method('getKeyContents')
+            ->willReturn(file_get_contents(__DIR__ . '/../vendor/league/oauth2-server/tests/Stubs/private.key'));
+
         $idToken = new IdToken();
         $idToken->setIssuer('issuer');
         
@@ -26,7 +29,7 @@ class IDTokenTest extends TestCase
         $this->assertEquals($idToken->getSubject(), '123');
         $idToken->setAudience('audience');
 
-        $idToken->setExpiration((new \DateTime()));
+        $idToken->setExpiration((new \DateTimeImmutable()));
         $idToken->setIat(new \DateTimeImmutable());
         $idToken->setAuthTime(new \DateTime());
         $idToken->setNonce('nonce');

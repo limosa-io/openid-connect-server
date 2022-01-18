@@ -77,20 +77,12 @@ class AuthCodeGrantTest extends TestCase
             new DateInterval('PT10M')
         );
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            null,
-            'php://input',
-            $headers = [],
-            $cookies = [],
-            $queryParams = [
-                'response_type' => 'code',
-                'client_id'     => 'foo',
-                'scope'        => 'openid'
-            ]
-        );
+        $request = (new ServerRequest(
+            'GET',
+            'http://example.com?'
+        ))->withQueryParams(['response_type' => 'code',
+        'client_id'     => 'foo',
+        'scope'        => 'openid']);
 
         $this->assertTrue($grant->canRespondToAuthorizationRequest($request));
     }
@@ -124,14 +116,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setDefaultScope(self::DEFAULT_SCOPE);
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            null,
-            'php://input',
-            [],
-            [],
+        $request = (new ServerRequest('GET', 'http://example.com'))->withQueryParams(
             [
                 'response_type' => 'code',
                 'client_id'     => 'foo',
@@ -170,14 +155,10 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setDefaultScope(self::DEFAULT_SCOPE);
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            null,
-            'php://input',
-            [],
-            [],
+        $request = (new ServerRequest(
+            'GET',
+            'http://www.example.com'
+        ))->withQueryParams(
             [
                 'response_type' => 'code',
                 'client_id'     => 'foo',
@@ -215,21 +196,12 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setDefaultScope(self::DEFAULT_SCOPE);
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            null,
-            'php://input',
-            [],
-            [],
-            [
-                'response_type'  => 'code',
-                'client_id'      => 'foo',
-                'redirect_uri'   => 'http://foo/bar',
-                'code_challenge' => self::CODE_CHALLENGE,
-            ]
-        );
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
+            'response_type'  => 'code',
+            'client_id'      => 'foo',
+            'redirect_uri'   => 'http://foo/bar',
+            'code_challenge' => self::CODE_CHALLENGE,
+        ]);
 
         $this->assertInstanceOf(AuthorizationRequest::class, $grant->validateAuthorizationRequest($request));
     }
@@ -255,7 +227,7 @@ class AuthCodeGrantTest extends TestCase
 
         $grant->setClientRepository($clientRepositoryMock);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
             'response_type'  => 'code',
             'client_id'      => 'foo',
             'redirect_uri'   => 'http://foo/bar',
@@ -288,7 +260,7 @@ class AuthCodeGrantTest extends TestCase
 
         $grant->setClientRepository($clientRepositoryMock);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
             'response_type'  => 'code',
             'client_id'      => 'foo',
             'redirect_uri'   => 'http://foo/bar',
@@ -321,7 +293,7 @@ class AuthCodeGrantTest extends TestCase
 
         $grant->setClientRepository($clientRepositoryMock);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
             'response_type' => 'code',
             'client_id' => 'foo',
             'redirect_uri' => 'http://foo/bar',
@@ -339,7 +311,7 @@ class AuthCodeGrantTest extends TestCase
 
         $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
         $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
-        
+
         $grant = new AuthCodeGrant(
             $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock(),
             $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock(),
@@ -350,7 +322,7 @@ class AuthCodeGrantTest extends TestCase
         );
         $grant->setClientRepository($clientRepositoryMock);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
             'response_type' => 'code',
         ]);
 
@@ -378,7 +350,7 @@ class AuthCodeGrantTest extends TestCase
         );
         $grant->setClientRepository($clientRepositoryMock);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
             'response_type' => 'code',
             'client_id'     => 'foo',
         ]);
@@ -409,7 +381,7 @@ class AuthCodeGrantTest extends TestCase
         );
         $grant->setClientRepository($clientRepositoryMock);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
             'response_type' => 'code',
             'client_id'     => 'foo',
             'redirect_uri'  => 'http://bar',
@@ -441,7 +413,7 @@ class AuthCodeGrantTest extends TestCase
         );
         $grant->setClientRepository($clientRepositoryMock);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
             'response_type' => 'code',
             'client_id'     => 'foo',
             'redirect_uri'  => 'http://bar',
@@ -480,7 +452,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setDefaultScope(self::DEFAULT_SCOPE);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
             'response_type' => 'code',
             'client_id' => 'foo',
             'redirect_uri' => 'http://foo/bar',
@@ -589,15 +561,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setEncryptionKey($this->cryptStub->getKey());
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../../vendor/league/oauth2-server/tests/Stubs/private.key'));
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -663,17 +627,7 @@ class AuthCodeGrantTest extends TestCase
         $authCodeGrant->setEncryptionKey($this->cryptStub->getKey());
         $authCodeGrant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../../vendor/league/oauth2-server/tests/Stubs/private.key'));
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [
-                'Authorization' => 'Basic Zm9vOmJhcg==',
-            ],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'redirect_uri' => 'http://foo/bar',
@@ -693,9 +647,8 @@ class AuthCodeGrantTest extends TestCase
                             'sessionInformation' => (new SessionInformation())->setAcr('acr')->setAmr('amr')->setAzp('azp')->toJSON()
                         ]
                     )
-                ),
-            ]
-        );
+                )]
+        )->withHeader('Authorization', 'Basic ' . base64_encode('foo:1234'));
 
         /** @var StubResponseType $response */
         $response = $authCodeGrant->respondToAccessTokenRequest($request, new StubResponseType(), new \DateInterval('PT10M'));
@@ -741,15 +694,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setEncryptionKey($this->cryptStub->getKey());
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../../vendor/league/oauth2-server/tests/Stubs/private.key'));
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('GET', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -820,15 +765,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setEncryptionKey($this->cryptStub->getKey());
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../../vendor/league/oauth2-server/tests/Stubs/private.key'));
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('GET', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -901,15 +838,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setEncryptionKey($this->cryptStub->getKey());
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../../vendor/league/oauth2-server/tests/Stubs/private.key'));
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('GET', '/'))->withParsedBody(
             [
                 'grant_type'    => 'authorization_code',
                 'client_id'     => 'foo',
@@ -985,15 +914,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setEncryptionKey($this->cryptStub->getKey());
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../../vendor/league/oauth2-server/tests/Stubs/private.key'));
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('GET', '/'))->withParsedBody(
             [
                 'grant_type'    => 'authorization_code',
                 'client_id'     => 'foo',
@@ -1050,15 +971,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('GET', '/'))->withParsedBody(
             [
                 'client_id'  => 'foo',
                 'grant_type' => 'authorization_code',
@@ -1103,15 +1016,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'client_id'  => 'foo',
                 'grant_type' => 'authorization_code',
@@ -1130,7 +1035,7 @@ class AuthCodeGrantTest extends TestCase
         );
 
         $this->expectException(\League\OAuth2\Server\Exception\OAuthServerException::class);
-        $this->expectExceptionCode(3);
+        $this->expectExceptionCode(4);
 
         $grant->respondToAccessTokenRequest($request, new StubResponseType(), new DateInterval('PT10M'));
     }
@@ -1162,15 +1067,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'    => 'authorization_code',
                 'client_id'     => 'foo',
@@ -1206,15 +1103,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('GET', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -1262,15 +1151,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setClientRepository($clientRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('GET', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -1332,15 +1213,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('GET' ,'/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -1405,15 +1278,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -1477,15 +1342,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setRefreshTokenRepository($refreshTokenRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -1542,15 +1399,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'    => 'authorization_code',
                 'client_id'     => 'foo',
@@ -1621,15 +1470,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'    => 'authorization_code',
                 'client_id'     => 'foo',
@@ -1700,15 +1541,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'    => 'authorization_code',
                 'client_id'     => 'foo',
@@ -1779,15 +1612,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'    => 'authorization_code',
                 'client_id'     => 'foo',
@@ -1858,15 +1683,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -2029,15 +1846,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setEncryptionKey($this->cryptStub->getKey());
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../../vendor/league/oauth2-server/tests/Stubs/private.key'));
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -2108,15 +1917,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setEncryptionKey($this->cryptStub->getKey());
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../../vendor/league/oauth2-server/tests/Stubs/private.key'));
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -2190,15 +1991,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setEncryptionKey($this->cryptStub->getKey());
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../../vendor/league/oauth2-server/tests/Stubs/private.key'));
 
-        $request = new ServerRequest(
-            [],
-            [],
-            null,
-            'POST',
-            'php://input',
-            [],
-            [],
-            [],
+        $request = (new ServerRequest('POST', '/'))->withParsedBody(
             [
                 'grant_type'   => 'authorization_code',
                 'client_id'    => 'foo',
@@ -2282,7 +2075,7 @@ class AuthCodeGrantTest extends TestCase
         $grant->setScopeRepository($scopeRepositoryMock);
         $grant->setDefaultScope(self::DEFAULT_SCOPE);
 
-        $request = (new ServerRequest())->withQueryParams([
+        $request = (new ServerRequest('GET', '/'))->withQueryParams([
             'response_type' => 'code',
             'client_id'     => 'foo',
             'redirect_uri'  => 'http://foo/bar',
