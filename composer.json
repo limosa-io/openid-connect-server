@@ -36,6 +36,6 @@
     ],
     "minimum-stability": "stable",
     "scripts": {
-        "post-install-cmd": "chmod 600 ./vendor/league/oauth2-server/tests/Stubs/private.key"
+        "post-install-cmd": "chmod 660 ./vendor/league/oauth2-server/tests/Stubs/private.key"
     }
 }
