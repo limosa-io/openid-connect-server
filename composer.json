@@ -34,8 +34,5 @@
             "email": "arietimmerman@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
-    "scripts": {
-        "post-install-cmd": "chmod 660 ./vendor/league/oauth2-server/tests/Stubs/private.key"
-    }
+    "minimum-stability": "stable"
 }
