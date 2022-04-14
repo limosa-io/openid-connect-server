@@ -40,7 +40,7 @@ class IdToken
 
         $token = $config->builder()
             ->withHeader('kid', method_exists($privateKey, 'getKid') ? $privateKey->getKid() : null)
-            ->issuedBy($this->getIssuer())
+            ->issuedBy($this->getIssuer() ?? "none")
             ->withHeader('sub', $this->getSubject())
             ->relatedTo($this->getSubject())
             ->permittedFor($this->getAudience())
