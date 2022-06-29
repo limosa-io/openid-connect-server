@@ -76,7 +76,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
         $result->setResponseType($this->getQueryStringParameter('response_type', $request));
         $result->setResponseMode($this->getQueryStringParameter('response_mode', $request));
 
-        $nonce = $this->getQueryStringParameter('nonce', $request);
+        $nonce = $this->getQueryStringParameter('nonce', $request, '');
 
         //In OIDC, a nonce is required for the implicit flow
         if (strlen($nonce) == 0) {
