@@ -163,6 +163,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
                     );
                     if (count($claims) > 0) {
                         array_push($claimsRequested, ...$claims);
+                        $scopes[] = $scope;
                     }
                 }
 
