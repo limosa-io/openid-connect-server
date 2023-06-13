@@ -4,6 +4,7 @@ namespace Idaas\OpenID\Grant;
 
 use DateTimeImmutable;
 use Idaas\OpenID\Entities\IdToken;
+use Idaas\OpenID\IdTokenEvent;
 use Idaas\OpenID\Repositories\AccessTokenRepositoryInterface;
 use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
@@ -198,6 +199,8 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $idToken->setAcr($sessionInformation->getAcr());
         $idToken->setAmr($sessionInformation->getAmr());
         $idToken->setAzp($sessionInformation->getAzp());
+
+        $this->getEmitter()->emit(IdTokenEvent::TOKEN_POPULATED, $idToken);
 
         $result->setIdToken($idToken);
 
