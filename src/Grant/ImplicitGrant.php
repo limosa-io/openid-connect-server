@@ -4,6 +4,7 @@ namespace Idaas\OpenID\Grant;
 
 use DateTimeImmutable;
 use Idaas\OpenID\Entities\IdToken;
+use Idaas\OpenID\IdTokenEvent;
 use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\Repositories\UserRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
@@ -147,8 +148,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
             $idToken->setAudience($authorizationRequest->getClient()->getIdentifier());
             $idToken->setExpiration(DateTimeImmutable::createFromMutable((new \DateTime())->add($this->idTokenTTL))) ;
             $idToken->setIat(new \DateTimeImmutable());
-            // FIXME: this only works for Laravel
-            $idToken->setAuthTime(resolve(Session::class)->getAuthTime());
+            $idToken->setAuthTime(new \DateTime());
             $idToken->setNonce($authorizationRequest->getNonce());
 
             // If there is no access token returned, include the supported claims
@@ -185,6 +185,8 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
             $idToken->setAcr($sessionInformation->getAcr());
             $idToken->setAmr($sessionInformation->getAmr());
             $idToken->setAzp($sessionInformation->getAzp());
+
+            $this->getEmitter()->emit(new IdTokenEvent(IdTokenEvent::TOKEN_POPULATED, $idToken, $this));
 
             $parameters = [];
 
