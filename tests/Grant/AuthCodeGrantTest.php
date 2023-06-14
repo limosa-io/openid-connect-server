@@ -473,6 +473,8 @@ class AuthCodeGrantTest extends TestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
+        $authRequest->setRedirectUri('http://redirect/destination');
+        $authRequest->setResponseType('code');
 
         $authCodeRepository = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
         $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
@@ -500,6 +502,8 @@ class AuthCodeGrantTest extends TestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
+        $authRequest->setRedirectUri('http://redirect/destination');
+        $authRequest->setResponseType('code');
 
         $authCodeRepository = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
         $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
@@ -1720,6 +1724,8 @@ class AuthCodeGrantTest extends TestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
+        $authRequest->setRedirectUri('http://redirect/destination');
+        $authRequest->setResponseType('code');
 
         $authCodeRepository = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
         $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
@@ -1752,6 +1758,8 @@ class AuthCodeGrantTest extends TestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
+        $authRequest->setRedirectUri('http://redirect/destination');
+        $authRequest->setResponseType('code');
 
         $authCodeRepository = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
         $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());
@@ -1783,6 +1791,8 @@ class AuthCodeGrantTest extends TestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
+        $authRequest->setRedirectUri('http://redirect/destination');
+        $authRequest->setResponseType('code');
 
         $authCodeRepository = $this->getMockBuilder(AuthCodeRepositoryInterface::class)->getMock();
         $authCodeRepository->method('getNewAuthCode')->willReturn(new AuthCodeEntity());

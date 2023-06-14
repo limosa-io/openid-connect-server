@@ -53,6 +53,8 @@ class BasicTest extends TestCase
         $authRequest->setClient(new ClientEntity());
         $authRequest->setGrantTypeId('authorization_code_oidc');
         $authRequest->setUser(new UserEntity());
+        $authRequest->setRedirectUri('http://redirect/destination');
+        $authRequest->setResponseType('token');
 
         $this->assertInstanceOf(
             ResponseInterface::class,
