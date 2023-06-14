@@ -2,7 +2,7 @@
 
 namespace Idaas\OpenID;
 
-class Session
+class Session implements SessionInterface
 {
     public function getAuthTime()
     {

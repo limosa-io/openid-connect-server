@@ -102,7 +102,7 @@ class IdToken
     /**
      * Get the value of expiration
      */
-    public function getExpiration() : DateTimeImmutable
+    public function getExpiration() : \DateTimeInterface
     {
         return $this->expiration;
     }
@@ -112,7 +112,7 @@ class IdToken
      *
      * @return  self
      */
-    public function setExpiration(\DateTimeImmutable $expiration)
+    public function setExpiration(\DateTimeInterface $expiration)
     {
         $this->expiration = $expiration;
 
@@ -132,7 +132,7 @@ class IdToken
      *
      * @return  self
      */
-    public function setIat(\DateTimeImmutable $iat)
+    public function setIat(\DateTimeInterface $iat)
     {
         $this->iat = $iat;
 
@@ -152,7 +152,7 @@ class IdToken
      *
      * @return  self
      */
-    public function setAuthTime(\DateTime $authTime)
+    public function setAuthTime(\DateTimeInterface $authTime)
     {
         $this->authTime = $authTime;
 

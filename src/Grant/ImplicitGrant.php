@@ -8,7 +8,7 @@ use Idaas\OpenID\IdTokenEvent;
 use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\Repositories\UserRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
-use Idaas\OpenID\Session;
+use Idaas\OpenID\SessionInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
@@ -31,12 +31,18 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
     protected $claimRepositoryInterface;
 
     /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    /**
      * @param \DateInterval $accessTokenTTL
      * @param string $queryDelimiter
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
         ClaimRepositoryInterface $claimRepositoryInterface,
+        SessionInterface $session,
         \DateInterval $accessTokenTTL,
         \DateInterval $idTokenTTL,
         $queryDelimiter = '#'
@@ -45,6 +51,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
 
         $this->userRepository = $userRepository;
         $this->claimRepositoryInterface = $claimRepositoryInterface;
+        $this->session = $session;
 
         $this->accessTokenTTL = $accessTokenTTL;
         $this->idTokenTTL = $idTokenTTL;
@@ -143,12 +150,13 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
 
             $idToken = new IdToken();
 
+            $issuedAt = new \DateTimeImmutable();
             $idToken->setIssuer($this->issuer);
             $idToken->setSubject($authorizationRequest->getUser()->getIdentifier());
             $idToken->setAudience($authorizationRequest->getClient()->getIdentifier());
-            $idToken->setExpiration(DateTimeImmutable::createFromMutable((new \DateTime())->add($this->idTokenTTL))) ;
-            $idToken->setIat(new \DateTimeImmutable());
-            $idToken->setAuthTime(new \DateTime());
+            $idToken->setExpiration($issuedAt->add($this->idTokenTTL));
+            $idToken->setIat($issuedAt);
+            $idToken->setAuthTime($this->session->getAuthTime());
             $idToken->setNonce($authorizationRequest->getNonce());
             $idToken->setIdentifier($this->generateUniqueIdentifier());
 
