@@ -180,6 +180,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $idToken->setAudience($authCodePayload->client_id);
         $idToken->setExpiration(DateTimeImmutable::createFromMutable((new \DateTime())->add($this->idTokenTTL)));
         $idToken->setIat(new \DateTimeImmutable());
+        $idToken->setIdentifier($this->generateUniqueIdentifier());
 
         $idToken->setAuthTime(new \DateTime('@' . $authCodePayload->auth_time));
         $idToken->setNonce($authCodePayload->nonce);
@@ -200,7 +201,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $idToken->setAmr($sessionInformation->getAmr());
         $idToken->setAzp($sessionInformation->getAzp());
 
-        $this->getEmitter()->emit(IdTokenEvent::TOKEN_POPULATED, $idToken);
+        $this->getEmitter()->emit(new IdTokenEvent(IdTokenEvent::TOKEN_POPULATED, $idToken, $this));
 
         $result->setIdToken($idToken);
 
