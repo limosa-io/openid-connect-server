@@ -35,6 +35,7 @@ class IDTokenTest extends TestCase
         $idToken->setNonce('nonce');
         $idToken->setAmr('amr');
         $idToken->setAcr('acr');
+        $idToken->setIdentifier('identifier');
 
         $token = $idToken->convertToJWT($cryptKey)->toString();
 
