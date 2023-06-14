@@ -150,6 +150,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
             $idToken->setIat(new \DateTimeImmutable());
             $idToken->setAuthTime(new \DateTime());
             $idToken->setNonce($authorizationRequest->getNonce());
+            $idToken->setIdentifier($this->generateUniqueIdentifier());
 
             // If there is no access token returned, include the supported claims
             if ($authorizationRequest->getResponseType() == 'id_token') {

@@ -20,6 +20,7 @@ class IdToken
     protected $acr; // Authentication Context Class Reference
     protected $amr; // Authentication Methods References
     protected $azp; // Authorized party
+    protected $identifier;
 
     protected $extra = [];
 
@@ -46,7 +47,7 @@ class IdToken
             ->permittedFor($this->getAudience())
             ->expiresAt($this->getExpiration())
             ->issuedAt($this->getIat())
-            ->identifiedBy("123")
+            ->identifiedBy($this->identifier)
             ->withClaim('auth_time', $this->getAuthTime()->getTimestamp())
             ->withClaim('nonce', $this->getNonce());
 
@@ -254,6 +255,24 @@ class IdToken
     public function setIssuer($issuer)
     {
         $this->issuer = $issuer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of identifiedBy
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * Set the value of identifiedBy
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
 
         return $this;
     }
