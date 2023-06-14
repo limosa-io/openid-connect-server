@@ -201,7 +201,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $idToken->setAmr($sessionInformation->getAmr());
         $idToken->setAzp($sessionInformation->getAzp());
 
-        $this->getEmitter()->emit(IdTokenEvent::TOKEN_POPULATED, $idToken);
+        $this->getEmitter()->emit(new IdTokenEvent(IdTokenEvent::TOKEN_POPULATED, $idToken, $this));
 
         $result->setIdToken($idToken);
 
