@@ -2,14 +2,13 @@
 
 namespace Idaas\OpenID\Grant;
 
-use DateTimeImmutable;
 use Idaas\OpenID\Entities\IdToken;
 use Idaas\OpenID\IdTokenEvent;
 use Idaas\OpenID\Repositories\AccessTokenRepositoryInterface;
 use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
 use Idaas\OpenID\ResponseHandler;
-use Idaas\OpenID\Session;
+use Idaas\OpenID\SessionInterface;
 use Idaas\OpenID\SessionInformation;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -45,7 +44,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         AuthCodeRepositoryInterface $authCodeRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
         ClaimRepositoryInterface $claimRepository,
-        Session $session,
+        SessionInterface $session,
         \DateInterval $authCodeTTL,
         \DateInterval $idTokenTTL,
         $disableRequireCodeChallengeForPublicClients = true
@@ -174,15 +173,16 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
             $authCodePayload->claims = (array) $authCodePayload->claims;
         }
 
+        $issuedAt = new \DateTimeImmutable();
         $idToken = new IdToken();
         $idToken->setIssuer($this->issuer);
         $idToken->setSubject($authCodePayload->user_id);
         $idToken->setAudience($authCodePayload->client_id);
-        $idToken->setExpiration(DateTimeImmutable::createFromMutable((new \DateTime())->add($this->idTokenTTL)));
-        $idToken->setIat(new \DateTimeImmutable());
+        $idToken->setExpiration($issuedAt->add($this->idTokenTTL));
+        $idToken->setIat($issuedAt);
         $idToken->setIdentifier($this->generateUniqueIdentifier());
 
-        $idToken->setAuthTime(new \DateTime('@' . $authCodePayload->auth_time));
+        $idToken->setAuthTime(new \DateTimeImmutable('@' . $authCodePayload->auth_time));
         $idToken->setNonce($authCodePayload->nonce);
 
         if ($authCodePayload->claims) {
@@ -237,7 +237,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
                 'auth_code_id'          => $authCode->getIdentifier(),
                 'scopes'                => $authCode->getScopes(),
                 'user_id'               => $authCode->getUserIdentifier(),
-                'expire_time'           => (new \DateTime())->add($this->authCodeTTL)->format('U'),
+                'expire_time'           => (new \DateTimeImmutable())->add($this->authCodeTTL)->format('U'),
                 'code_challenge'        => $authorizationRequest->getCodeChallenge(),
                 'code_challenge_method' => $authorizationRequest->getCodeChallengeMethod(),
 
