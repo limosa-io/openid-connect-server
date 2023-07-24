@@ -85,16 +85,25 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     public function canRespondToAccessTokenRequest(ServerRequestInterface $request)
     {
         $requestParameters = (array) $request->getParsedBody();
-        //FIXME: for some reason, the unit test complete if the next three lines are removed
-        if (!in_array('code', array_keys($requestParameters))) {
+
+        // Don't try to handle code when it isn't even an authorization_code request
+        if (!array_key_exists('grant_type', $requestParameters)
+            || $requestParameters['grant_type'] !== 'authorization_code'
+        ) {
             return false;
         }
 
-        $authCodePayload = json_decode($this->decrypt($requestParameters['code']));
+        if (!array_key_exists('code', $requestParameters)) {
+            return false;
+        }
 
-        return (in_array('openid', $authCodePayload->scopes) &&
-            array_key_exists('grant_type', $requestParameters) &&
-            $requestParameters['grant_type'] === 'authorization_code');
+        try {
+            $authCodePayload = json_decode($this->decrypt($requestParameters['code']));
+        } catch (LogicException $e) {
+            return false;
+        }
+
+        return isset($authCodePayload->scopes) && in_array('openid', $authCodePayload->scopes);
     }
 
     /**
