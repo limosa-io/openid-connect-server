@@ -23,14 +23,10 @@ class ResponseHandler
     {
         foreach ($this->handlers as $handler) {
             if ($handler->canRespondToAuthorizationRequest($authenticationRequest)) {
-                $response = $handler->generateResponse($authenticationRequest, $code);
+                return $handler->generateResponse($authenticationRequest, $code);
             }
         }
 
-        if ($response == null) {
-            throw OAuthServerException::invalidRequest('response_mode', 'No valid response_mode provided');
-        }
-
-        return $response;
+        throw OAuthServerException::invalidRequest('response_mode', 'No valid response_mode provided');
     }
 }
