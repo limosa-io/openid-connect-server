@@ -124,6 +124,11 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
             $result->setAcrValues(explode(' ', $acrValues));
         }
 
+        $claims = $this->getQueryStringParameter('claims', $request);
+        $result->setClaims(
+            $this->claimRepositoryInterface->claimsRequestToEntities($claims ? json_decode($claims, true) : null)
+        );
+
         return $result;
     }
 
@@ -160,9 +165,10 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
             $idToken->setNonce($authorizationRequest->getNonce());
             $idToken->setIdentifier($this->generateUniqueIdentifier());
 
+            $claimsRequested = $authorizationRequest->getClaims();
+
             // If there is no access token returned, include the supported claims
             if ($authorizationRequest->getResponseType() == 'id_token') {
-                $claimsRequested = [];
                 $scopes = [];
 
                 foreach ($authorizationRequest->getScopes() as $scope) {
@@ -185,6 +191,8 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
                 foreach ($attributes as $key => $value) {
                     $idToken->addExtra($key, $value);
                 }
+            } else {
+                $this->accessTokenRepository->storeClaims($accessToken, $claimsRequested);
             }
 
             /**
