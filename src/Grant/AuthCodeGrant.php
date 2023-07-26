@@ -62,7 +62,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         }
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'authorization_code_oidc';
     }
@@ -70,7 +70,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     /**
      * {@inheritdoc}
      */
-    public function canRespondToAuthorizationRequest(ServerRequestInterface $request)
+    public function canRespondToAuthorizationRequest(ServerRequestInterface $request): bool
     {
         $result = parent::canRespondToAuthorizationRequest($request);
 
@@ -82,7 +82,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         return $result;
     }
 
-    public function canRespondToAccessTokenRequest(ServerRequestInterface $request)
+    public function canRespondToAccessTokenRequest(ServerRequestInterface $request): bool
     {
         $requestParameters = (array) $request->getParsedBody();
         //FIXME: for some reason, the unit test complete if the next three lines are removed
@@ -100,7 +100,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     /**
      * {@inheritdoc}
      */
-    public function validateAuthorizationRequest(ServerRequestInterface $request)
+    public function validateAuthorizationRequest(ServerRequestInterface $request): AuthorizationRequest
     {
         $result = parent::validateAuthorizationRequest($request);
         
@@ -160,7 +160,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,
         \DateInterval $accessTokenTTL
-    ) {
+    ): ResponseTypeInterface {
         /**
          * @var BearerTokenResponse $result
          */
@@ -211,7 +211,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     /**
      * {@inheritdoc}
      */
-    public function completeAuthorizationRequest(AuthorizationRequest $authorizationRequest)
+    public function completeAuthorizationRequest(AuthorizationRequest $authorizationRequest): ResponseTypeInterface
     {
         if (!($authorizationRequest instanceof AuthenticationRequest)) {
             throw OAuthServerException::invalidRequest('not possible');

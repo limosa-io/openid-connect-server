@@ -27,7 +27,7 @@ class BearerTokenResponse extends LeagueBearerTokenResponse implements ResponseT
         return $this->accessToken;
     }
 
-    protected function getExtraParams(AccessTokenEntityInterface $accessToken)
+    protected function getExtraParams(AccessTokenEntityInterface $accessToken): array
     {
 
         /*
