@@ -32,7 +32,6 @@ class IdToken
 
     public function convertToJWT(CryptKey $privateKey)
     {
-        
         $config = Configuration::forAsymmetricSigner(
             new Sha256(),
             InMemory::plainText($privateKey->getKeyContents()),
@@ -52,7 +51,7 @@ class IdToken
             ->withClaim('nonce', $this->getNonce());
 
         foreach ($this->extra as $key => $value) {
-            $token->withClaim($key, $value);
+            $token = $token->withClaim($key, $value);
         }
 
         return $token->getToken($config->signer(), $config->signingKey());
