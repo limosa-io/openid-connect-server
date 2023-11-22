@@ -40,7 +40,7 @@ class AuthenticationRequest extends AuthorizationRequest
         $result->setScopes($authorizationRequest->getScopes());
         $result->setState($authorizationRequest->getState());
 
-        if ($authorizationRequest->getUser() != null) {
+        if ($authorizationRequest->getUser() !== null) {
             $result->setUser($authorizationRequest->getUser());
         }
 

@@ -6,7 +6,6 @@ use JsonSerializable;
 
 interface ClaimEntityInterface extends JsonSerializable
 {
-
     const TYPE_ID_TOKEN = 'id_token';
     const TYPE_USERINFO = 'userinfo';
 
