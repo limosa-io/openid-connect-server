@@ -4,6 +4,7 @@ namespace Idaas\OpenID\Entities;
 
 use DateTimeImmutable;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Token\RegisteredClaims;
 use League\OAuth2\Server\CryptKey;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -13,6 +14,9 @@ class IdToken
     protected $issuer;
     protected $subject;
     protected $audience;
+    /**
+     * @var DateTimeImmutable
+     */
     protected $expiration;
     protected $iat; // Time at which the JWT was issued
     protected $authTime;
@@ -32,7 +36,6 @@ class IdToken
 
     public function convertToJWT(CryptKey $privateKey)
     {
-        
         $config = Configuration::forAsymmetricSigner(
             new Sha256(),
             InMemory::plainText($privateKey->getKeyContents()),
@@ -52,7 +55,11 @@ class IdToken
             ->withClaim('nonce', $this->getNonce());
 
         foreach ($this->extra as $key => $value) {
-            $token->withClaim($key, $value);
+            // Lobucci/jwt does not allow us set sub claim, so we skip it
+            // Perhaps because its set in the relatedTo method?
+            if ($key !== RegisteredClaims::SUBJECT) {
+                $token->withClaim($key, $value);
+            }
         }
 
         return $token->getToken($config->signer(), $config->signingKey());
@@ -102,7 +109,7 @@ class IdToken
     /**
      * Get the value of expiration
      */
-    public function getExpiration() : \DateTimeInterface
+    public function getExpiration() : \DateTimeImmutable
     {
         return $this->expiration;
     }
@@ -112,7 +119,7 @@ class IdToken
      *
      * @return  self
      */
-    public function setExpiration(\DateTimeInterface $expiration)
+    public function setExpiration(\DateTimeImmutable $expiration)
     {
         $this->expiration = $expiration;
 
