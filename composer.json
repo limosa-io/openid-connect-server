@@ -10,6 +10,7 @@
     },
     "require": {
         "league/oauth2-server": "^8",
+        "lcobucci/jwt": "^5.0",
         "nyholm/psr7": "^1.3"
     },
     "require-dev": {
