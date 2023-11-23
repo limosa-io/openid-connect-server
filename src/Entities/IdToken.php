@@ -58,7 +58,9 @@ class IdToken
             // Lobucci/jwt does not allow us set sub claim, so we skip it
             // Perhaps because its set in the relatedTo method?
             if ($key !== RegisteredClaims::SUBJECT) {
-                $token->withClaim($key, $value);
+                // We reassigned the value of $token because withClaim returns a cloned instance of Builder
+                // from lobucci/jwt >=5.0
+                $token = $token->withClaim($key, $value);
             }
         }
 
