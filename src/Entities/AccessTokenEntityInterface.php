@@ -16,7 +16,7 @@ interface AccessTokenEntityInterface extends LeagueAccessTokenEntityInterface
 
     /**
      * Return an array of scopes associated with the token
-     * 
+     *
      * @return ScopeEntityInterface[]
      */
     public function getScopes();

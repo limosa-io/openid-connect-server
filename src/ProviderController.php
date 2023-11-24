@@ -1,5 +1,6 @@
 <?php
 
+// FIXME: This class used Laravel classes
 namespace Idaas\OpenID;
 
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class ProviderController extends BaseController
 
         $key = $crypt->x509;
         $key = str_replace(array('-----BEGIN CERTIFICATE-----','-----END CERTIFICATE-----',"\r", "\n", " "), "", $key);
-        $keyForParsing = "-----BEGIN CERTIFICATE-----\n".chunk_split($key, 64, "\n")."-----END CERTIFICATE-----\n";
+        $keyForParsing = "-----BEGIN CERTIFICATE-----\n" . chunk_split($key, 64, "\n") . "-----END CERTIFICATE-----\n";
 
         $result = openssl_pkey_get_details(openssl_pkey_get_public(openssl_x509_read($keyForParsing)));
 

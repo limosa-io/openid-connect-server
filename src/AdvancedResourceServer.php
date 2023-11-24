@@ -8,7 +8,6 @@ use League\OAuth2\Server\ResourceServer;
 
 class AdvancedResourceServer extends ResourceServer
 {
-
     /**
      * @var null|AuthorizationValidatorInterface
      */

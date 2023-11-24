@@ -4,7 +4,6 @@ namespace Idaas\OpenID\Entities;
 
 use DateTimeImmutable;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token\RegisteredClaims;
 use League\OAuth2\Server\CryptKey;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -105,7 +104,7 @@ class IdToken
     /**
      * Get the value of expiration
      */
-    public function getExpiration() : \DateTimeImmutable
+    public function getExpiration(): \DateTimeImmutable
     {
         return $this->expiration;
     }

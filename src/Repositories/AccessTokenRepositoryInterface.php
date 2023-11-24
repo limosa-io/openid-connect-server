@@ -8,7 +8,6 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface as LeagueAc
 
 interface AccessTokenRepositoryInterface extends LeagueAccessTokenRepositoryInterface
 {
-
     /**
      * @param array $claims ClaimEntityInterface[]
      */
