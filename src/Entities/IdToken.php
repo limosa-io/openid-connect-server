@@ -55,13 +55,7 @@ class IdToken
             ->withClaim('nonce', $this->getNonce());
 
         foreach ($this->extra as $key => $value) {
-            // Lobucci/jwt does not allow us set sub claim, so we skip it
-            // Perhaps because its set in the relatedTo method?
-            if ($key !== RegisteredClaims::SUBJECT) {
-                // We reassigned the value of $token because withClaim returns a cloned instance of Builder
-                // from lobucci/jwt >=5.0
-                $token = $token->withClaim($key, $value);
-            }
+            $token = $token->withClaim($key, $value);
         }
 
         return $token->getToken($config->signer(), $config->signingKey());
