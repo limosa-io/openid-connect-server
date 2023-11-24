@@ -23,7 +23,7 @@ class SessionInformation
 
     public function toJSON()
     {
-        return json_encode(['acr'=>$this->acr, 'amr'=>$this->amr,'azp'=>$this->azp]);
+        return json_encode(['acr' => $this->acr, 'amr' => $this->amr,'azp' => $this->azp]);
     }
 
     public function __toString()

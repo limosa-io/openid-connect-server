@@ -8,7 +8,7 @@ use League\OAuth2\Server\Grant\GrantTypeInterface;
 
 class IdTokenEvent extends Event
 {
-    const TOKEN_POPULATED = 'id_token.populated';
+    public const TOKEN_POPULATED = 'id_token.populated';
 
     /**
      * @var IdToken

@@ -11,7 +11,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class UserInfo
 {
-
     protected $userRepository;
     protected $tokenRepository;
     protected $resourceServer;

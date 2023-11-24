@@ -89,7 +89,8 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $requestParameters = (array) $request->getParsedBody();
 
         // Don't try to handle code when it isn't even an authorization_code request
-        if (!array_key_exists('grant_type', $requestParameters)
+        if (
+            !array_key_exists('grant_type', $requestParameters)
             || $requestParameters['grant_type'] !== 'authorization_code'
         ) {
             return false;
@@ -114,7 +115,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     public function validateAuthorizationRequest(ServerRequestInterface $request)
     {
         $result = parent::validateAuthorizationRequest($request);
-        
+
         $redirectUri = $this->getQueryStringParameter(
             'redirect_uri',
             $request

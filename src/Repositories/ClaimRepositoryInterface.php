@@ -23,7 +23,7 @@ interface ClaimRepositoryInterface extends RepositoryInterface
     /**
      * @return ClaimEntityInterface[]
      */
-    public function getClaimsByScope(ScopeEntityInterface $scope) : iterable;
+    public function getClaimsByScope(ScopeEntityInterface $scope): iterable;
 
     public function claimsRequestToEntities(array $json = null);
 }

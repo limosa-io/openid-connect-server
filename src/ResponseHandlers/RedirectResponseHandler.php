@@ -19,7 +19,8 @@ class RedirectResponseHandler
     {
         $queryDelimiter = '?';
 
-        if ($authenticationRequest->getResponseMode() === 'fragment' ||
+        if (
+            $authenticationRequest->getResponseMode() === 'fragment' ||
             strpos($authenticationRequest->getResponseType(), 'code') === false
         ) {
             $queryDelimiter = '#';

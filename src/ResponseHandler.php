@@ -9,7 +9,6 @@ use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 
 class ResponseHandler
 {
-
     protected $handlers;
 
     public function __construct()
