@@ -21,9 +21,52 @@ This library was created by [Arie Timmerman](https://github.com/arietimmerman).
 composer require nl.idaas/openid-server
 ~~~
 
-## Examples
+## Example
 
-TODO:
+This example implements show how to implement an authorization server with support for an authorization grant, including OpenID Connect support.
+
+~~~.php
+// Init our repositories
+$scopeRepository = new ScopeRepository(); // instance of ScopeRepositoryInterface
+$authCodeRepository = new AuthCodeRepository(); // instance of AuthCodeRepositoryInterface
+$refreshTokenRepository = new RefreshTokenRepository(); // instance of RefreshTokenRepositoryInterface
+
+// Specific to this module
+$clientRepository = new ClientRepository(); // instance of \Idaas\OpenID\Repositories\ClientRepositoryInterface
+$accessTokenRepository = new AccessTokenRepository(); // instance of \Idaas\OpenID\Repositories\AccessTokenRepositoryInterface
+$claimRepository = new ClaimRepository(); // instance of ClaimRepositoryInterface
+
+$privateKey = 'file://path/to/private.key';
+//$privateKey = new CryptKey('file://path/to/private.key', 'passphrase'); // if private key has a pass phrase
+$encryptionKey = 'lxZFUEsBCJ2Yb14IF2ygAHI5N4+ZAUXXaSeeJm6+twsUmIen'; // generate using base64_encode(random_bytes(32))
+
+// Setup the authorization server
+$server = new \League\OAuth2\Server\AuthorizationServer(
+    $clientRepository,
+    $accessTokenRepository,
+    $scopeRepository,
+    $privateKey,
+    $encryptionKey
+);
+
+// OpenID Connect Authorization Code Grant
+$grant = new \Idaas\OpenID\Grant\AuthCodeGrant(
+    $authCodeRepository,
+    $refreshTokenRepository,
+    $claimRepository,
+    new \Idaas\OpenID\Session,
+    new DateInterval('PT10M'), // authorization codes will expire after 10 minutes
+    new DateInterval('PT10M') // ID Token will expire after 10 minutes
+);
+
+$grant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
+
+// Enable the authentication code grant on the server
+$server->enableGrantType(
+    $grant,
+    new \DateInterval('PT1H') // access tokens will expire after 1 hour
+);
+~~~
 
 ## Usages
 
