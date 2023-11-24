@@ -8,6 +8,7 @@ use Idaas\OpenID\Repositories\AccessTokenRepositoryInterface;
 use Idaas\OpenID\Repositories\ClaimRepositoryInterface;
 use Idaas\OpenID\RequestTypes\AuthenticationRequest;
 use Idaas\OpenID\ResponseHandler;
+use Idaas\OpenID\ResponseTypes\BearerTokenResponse;
 use Idaas\OpenID\SessionInterface;
 use Idaas\OpenID\SessionInformation;
 use League\OAuth2\Server\Entities\UserEntityInterface;
@@ -16,6 +17,7 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
+use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
@@ -183,7 +185,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         }
 
         $issuedAt = new \DateTimeImmutable();
-        $idToken = new IdToken();
+        $idToken = $this->makeIdTokenInstance();
         $idToken->setIssuer($this->issuer);
         $idToken->setSubject($authCodePayload->user_id);
         $idToken->setAudience($authCodePayload->client_id);
@@ -201,6 +203,8 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         }
 
         // TODO: populate idToken with claims ...
+        $idToken = $this->addMoreClaimsToIdToken($idToken);
+
         /**
          * @var \Idaas\OpenID\SessionInformation
          */
@@ -215,6 +219,19 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         $result->setIdToken($idToken);
 
         return $result;
+    }
+
+    protected function addMoreClaimsToIdToken(IdToken $idToken)
+    {
+        return $idToken;
+    }
+
+    /**
+     * @return IdToken
+     */
+    protected function makeIdTokenInstance()
+    {
+        return new IdToken();
     }
 
     /**
@@ -250,7 +267,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
                 'code_challenge'        => $authorizationRequest->getCodeChallenge(),
                 'code_challenge_method' => $authorizationRequest->getCodeChallengeMethod(),
 
-                // OIDC specifc parameters important for the id_token
+                // OIDC specific parameters important for the id_token
                 'nonce'                 => $authorizationRequest->getNonce(),
                 'max_age'               => $authorizationRequest->getMaxAge(),
                 'id_token_hint'         => $authorizationRequest->getIDTokenHint(),

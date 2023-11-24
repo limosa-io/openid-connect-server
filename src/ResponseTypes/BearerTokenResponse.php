@@ -29,7 +29,6 @@ class BearerTokenResponse extends LeagueBearerTokenResponse implements ResponseT
 
     protected function getExtraParams(AccessTokenEntityInterface $accessToken)
     {
-
         /*
          The Claims requested by the profile, email, address, and phone scope values
          are returned from the UserInfo Endpoint, as described in Section 5.3.2,
