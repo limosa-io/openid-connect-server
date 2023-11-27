@@ -13,6 +13,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use League\OAuth2\Server\ResponseTypes\RedirectResponse;
+use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
@@ -64,12 +65,12 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
         $this->queryDelimiter = $queryDelimiter;
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'implicit_oidc';
     }
 
-    public function canRespondToAuthorizationRequest(ServerRequestInterface $request)
+    public function canRespondToAuthorizationRequest(ServerRequestInterface $request): bool
     {
         $result = (isset($request->getQueryParams()['response_type'])
             && (
@@ -85,7 +86,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
         return $result && ($scopes && in_array('openid', explode(' ', $scopes)));
     }
 
-    public function validateAuthorizationRequest(ServerRequestInterface $request)
+    public function validateAuthorizationRequest(ServerRequestInterface $request): AuthorizationRequest
     {
         $result = parent::validateAuthorizationRequest($request);
 
@@ -142,7 +143,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
         return $result;
     }
 
-    public function completeAuthorizationRequest(AuthorizationRequest $authorizationRequest)
+    public function completeAuthorizationRequest(AuthorizationRequest $authorizationRequest): ResponseTypeInterface
     {
         if (!($authorizationRequest instanceof AuthenticationRequest)) {
             throw OAuthServerException::invalidRequest('not possible');
