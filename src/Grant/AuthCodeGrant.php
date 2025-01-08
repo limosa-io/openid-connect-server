@@ -294,4 +294,9 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
             );
         }
     }
+
+    protected function createAuthorizationRequest(): AuthenticationRequest
+    {
+        return new AuthenticationRequest();
+    }
 }

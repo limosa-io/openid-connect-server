@@ -23,6 +23,8 @@ class AuthenticationRequest extends AuthorizationRequest
 
     /**
      * @return AuthenticationRequest
+     *
+     * @deprecated Not really used anymore with league/oauth2-server 9 as AuthenticationRequest is populated by league/oauth2-server using `createAuthorizationRequest()`
      */
     public static function fromAuthorizationRequest(AuthorizationRequest $authorizationRequest)
     {
