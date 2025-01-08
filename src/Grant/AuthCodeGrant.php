@@ -233,7 +233,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     /**
      * {@inheritdoc}
      */
-    public function completeAuthorizationRequest(AuthorizationRequest $authorizationRequest): ResponseTypeInterface
+    public function completeAuthorizationRequest(AuthorizationRequest|AuthorizationRequestInterface $authorizationRequest): ResponseTypeInterface
     {
         if (!($authorizationRequest instanceof AuthenticationRequest)) {
             throw OAuthServerException::invalidRequest('not possible');

@@ -138,7 +138,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
         return $result;
     }
 
-    public function completeAuthorizationRequest(AuthorizationRequest $authorizationRequest): ResponseTypeInterface
+    public function completeAuthorizationRequest(AuthorizationRequest|AuthorizationRequestInterface $authorizationRequest): ResponseTypeInterface
     {
         if (!($authorizationRequest instanceof AuthenticationRequest)) {
             throw OAuthServerException::invalidRequest('not possible');
