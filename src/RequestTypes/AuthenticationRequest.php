@@ -33,12 +33,24 @@ class AuthenticationRequest extends AuthorizationRequest
         $result = new self();
 
         $result->setClient($authorizationRequest->getClient());
-        $result->setCodeChallenge($authorizationRequest->getCodeChallenge());
-        $result->setCodeChallengeMethod($authorizationRequest->getCodeChallengeMethod());
         $result->setGrantTypeId($authorizationRequest->getGrantTypeId());
-        $result->setRedirectUri($authorizationRequest->getRedirectUri());
         $result->setScopes($authorizationRequest->getScopes());
-        $result->setState($authorizationRequest->getState());
+
+        if ($authorizationRequest->getCodeChallenge() !== null) {
+            $result->setCodeChallenge($authorizationRequest->getCodeChallenge());
+        }
+
+        if ($authorizationRequest->getCodeChallengeMethod() !== null) {
+            $result->setCodeChallengeMethod($authorizationRequest->getCodeChallengeMethod());
+        }
+
+        if ($authorizationRequest->getRedirectUri() !== null) {
+            $result->setRedirectUri($authorizationRequest->getRedirectUri());
+        }
+
+        if ($authorizationRequest->getState() !== null) {
+            $result->setState($authorizationRequest->getState());
+        }
 
         if ($authorizationRequest->getUser() !== null) {
             $result->setUser($authorizationRequest->getUser());
