@@ -121,6 +121,7 @@ class AuthCodeGrantTest extends TestCase
                 'response_type' => 'code',
                 'client_id'     => 'foo',
                 'redirect_uri'  => 'http://foo/bar',
+                'code_challenge' => self::CODE_CHALLENGE,
             ]
         );
 
@@ -224,6 +225,7 @@ class AuthCodeGrantTest extends TestCase
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
         );
+        $grant->setDefaultScope('');
 
         $grant->setClientRepository($clientRepositoryMock);
 
@@ -257,6 +259,7 @@ class AuthCodeGrantTest extends TestCase
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
         );
+        $grant->setDefaultScope('');
 
         $grant->setClientRepository($clientRepositoryMock);
 
@@ -290,6 +293,7 @@ class AuthCodeGrantTest extends TestCase
             new DateInterval('PT10M'),
             new DateInterval('PT10M')
         );
+        $grant->setDefaultScope('');
 
         $grant->setClientRepository($clientRepositoryMock);
 
@@ -468,9 +472,12 @@ class AuthCodeGrantTest extends TestCase
 
     public function testCompleteAuthorizationRequest()
     {
+        $client = new ClientEntity();
+        $client->setIdentifier('test');
+
         $authRequest = new AuthenticationRequest();
         $authRequest->setAuthorizationApproved(true);
-        $authRequest->setClient(new ClientEntity());
+        $authRequest->setClient($client);
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
         $authRequest->setRedirectUri('http://redirect/destination');
@@ -535,6 +542,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeEntity = new ScopeEntity();
@@ -577,7 +585,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'expire_time'  => \time() + 3600,
                             'client_id'    => 'foo',
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'redirect_uri' => 'http://foo/bar',
 
                             'scopes'       => ['foo','openid'],
@@ -605,6 +613,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setIdentifier('foo');
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeRepositoryMock->method('getScopeEntityByIdentifier')->willReturn(new ScopeEntity());
@@ -641,7 +650,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'client_id' => 'foo',
                             'expire_time'  => \time() + 3600,
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'redirect_uri' => 'http://foo/bar',
 
                             'scopes'       => ['foo','openid'],
@@ -709,7 +718,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'expire_time'  => \time() + 3600,
                             'client_id'    => 'foo',
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'redirect_uri' => 'http://foo/bar',
 
                             'scopes'       => ['foo','openid'],
@@ -780,7 +789,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'expire_time'  => \time() + 3600,
                             'client_id'    => 'foo',
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'redirect_uri' => 'http://foo/bar',
 
                             'scopes'       => ['foo','openid'],
@@ -809,6 +818,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeEntity = new ScopeEntity();
@@ -854,7 +864,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id'          => \uniqid(),
                             'expire_time'           => \time() + 3600,
                             'client_id'             => 'foo',
-                            'user_id'               => 123,
+                            'user_id'               => '123',
                             'redirect_uri'          => 'http://foo/bar',
                             'code_challenge'        => self::CODE_VERIFIER,
                             'code_challenge_method' => 'plain',
@@ -885,6 +895,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeEntity = new ScopeEntity();
@@ -930,7 +941,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id'          => \uniqid(),
                             'expire_time'           => \time() + 3600,
                             'client_id'             => 'foo',
-                            'user_id'               => 123,
+                            'user_id'               => '123',
                             'redirect_uri'          => 'http://foo/bar',
                             'code_challenge'        => self::CODE_CHALLENGE,
                             'code_challenge_method' => 'S256',
@@ -960,6 +971,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $claimRepositoryMock = $this->getMockBuilder(ClaimRepositoryInterface::class)->getMock();
         $claimRepositoryMock->method('claimsRequestToEntities')->willReturn([new ClaimEntity('sub')]);
@@ -1051,6 +1063,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
         $refreshTokenRepositoryMock = $this->getMockBuilder(RefreshTokenRepositoryInterface::class)->getMock();
@@ -1119,7 +1132,7 @@ class AuthCodeGrantTest extends TestCase
                             'refresh_token_id' => 'zyxwvu',
                             'access_token_id'  => 'abcdef',
                             'scopes'           => ['foo'],
-                            'user_id'          => 123,
+                            'user_id'          => '123',
                             'expire_time'      => \time() + 3600,
                         ]
                     )
@@ -1166,7 +1179,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'expire_time'  => \time() - 3600,
                             'client_id'    => 'foo',
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'scopes'       => ['foo'],
                             'redirect_uri' => 'http://foo/bar',
                         ]
@@ -1191,6 +1204,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
         $accessTokenRepositoryMock->method('persistNewAccessToken')->willReturnSelf();
@@ -1228,7 +1242,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'expire_time'  => \time() + 3600,
                             'client_id'    => 'foo',
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'redirect_uri' => 'http://foo/bar',
 
                             'scopes'       => ['foo','openid'],
@@ -1247,7 +1261,10 @@ class AuthCodeGrantTest extends TestCase
             $grant->respondToAccessTokenRequest($request, new StubResponseType(), new DateInterval('PT10M'));
         } catch (OAuthServerException $e) {
             $this->assertEquals($e->getHint(), 'Authorization code has been revoked');
-            $this->assertEquals($e->getErrorType(), 'invalid_request');
+            $this->assertThat($e->getErrorType(), $this->logicalOr(
+                $this->equalTo('invalid_grant'), // league/oauth2-server 9
+                $this->equalTo('invalid_request') // league/oauth2-server 8
+            ));
         }
     }
 
@@ -1259,6 +1276,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
         $accessTokenRepositoryMock->method('persistNewAccessToken')->willReturnSelf();
@@ -1293,7 +1311,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'expire_time'  => \time() + 3600,
                             'client_id'    => 'bar',
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'redirect_uri' => 'http://foo/bar',
 
                             'scopes'       => ['foo','openid'],
@@ -1323,6 +1341,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $accessTokenRepositoryMock = $this->getMockBuilder(AccessTokenRepositoryInterface::class)->getMock();
         $accessTokenRepositoryMock->method('persistNewAccessToken')->willReturnSelf();
@@ -1359,7 +1378,10 @@ class AuthCodeGrantTest extends TestCase
             /* @var StubResponseType $response */
             $grant->respondToAccessTokenRequest($request, new StubResponseType(), new DateInterval('PT10M'));
         } catch (OAuthServerException $e) {
-            $this->assertEquals($e->getHint(), 'Cannot decrypt the authorization code');
+            $this->assertThat($e->getHint(), $this->logicalOr(
+                $this->equalTo('Cannot validate the provided authorization code'), // league/oauth2-server 9.1+
+                $this->equalTo('Cannot decrypt the authorization code') // league/oauth2-server 8 and 9.0
+            ));
         }
     }
 
@@ -1371,6 +1393,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeEntity = new ScopeEntity();
@@ -1415,7 +1438,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id'          => \uniqid(),
                             'expire_time'           => \time() + 3600,
                             'client_id'             => 'foo',
-                            'user_id'               => 123,
+                            'user_id'               => '123',
                             'scopes'                => ['foo'],
                             'redirect_uri'          => 'http://foo/bar',
                             'code_challenge'        => 'foobar',
@@ -1442,6 +1465,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeEntity = new ScopeEntity();
@@ -1486,7 +1510,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id'          => \uniqid(),
                             'expire_time'           => \time() + 3600,
                             'client_id'             => 'foo',
-                            'user_id'               => 123,
+                            'user_id'               => '123',
                             'scopes'                => ['foo'],
                             'redirect_uri'          => 'http://foo/bar',
                             'code_challenge'        => 'foobar',
@@ -1513,6 +1537,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeEntity = new ScopeEntity();
@@ -1557,7 +1582,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id'          => \uniqid(),
                             'expire_time'           => \time() + 3600,
                             'client_id'             => 'foo',
-                            'user_id'               => 123,
+                            'user_id'               => '123',
                             'scopes'                => ['foo'],
                             'redirect_uri'          => 'http://foo/bar',
                             'code_challenge'        => self::CODE_CHALLENGE,
@@ -1584,6 +1609,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeEntity = new ScopeEntity();
@@ -1628,7 +1654,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id'          => \uniqid(),
                             'expire_time'           => \time() + 3600,
                             'client_id'             => 'foo',
-                            'user_id'               => 123,
+                            'user_id'               => '123',
                             'scopes'                => ['foo'],
                             'redirect_uri'          => 'http://foo/bar',
                             'code_challenge'        => 'R7T1y1HPNFvs1WDCrx4lfoBS6KD2c71pr8OHvULjvv8',
@@ -1655,6 +1681,7 @@ class AuthCodeGrantTest extends TestCase
         $client->setConfidential();
         $clientRepositoryMock = $this->getMockBuilder(ClientRepositoryInterface::class)->getMock();
         $clientRepositoryMock->method('getClientEntity')->willReturn($client);
+        $clientRepositoryMock->method('validateClient')->willReturn(true);
 
         $scopeRepositoryMock = $this->getMockBuilder(ScopeRepositoryInterface::class)->getMock();
         $scopeEntity = new ScopeEntity();
@@ -1698,7 +1725,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id'          => \uniqid(),
                             'expire_time'           => \time() + 3600,
                             'client_id'             => 'foo',
-                            'user_id'               => 123,
+                            'user_id'               => '123',
                             'scopes'                => ['foo'],
                             'redirect_uri'          => 'http://foo/bar',
                             'code_challenge'        => 'foobar',
@@ -1719,9 +1746,12 @@ class AuthCodeGrantTest extends TestCase
 
     public function testAuthCodeRepositoryUniqueConstraintCheck()
     {
+        $client = new ClientEntity();
+        $client->setIdentifier('foo');
+
         $authRequest = new AuthenticationRequest();
         $authRequest->setAuthorizationApproved(true);
-        $authRequest->setClient(new ClientEntity());
+        $authRequest->setClient($client);
         $authRequest->setGrantTypeId('authorization_code');
         $authRequest->setUser(new UserEntity());
         $authRequest->setRedirectUri('http://redirect/destination');
@@ -1867,7 +1897,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'expire_time'  => \time() + 3600,
                             'client_id'    => 'foo',
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'redirect_uri' => 'http://foo/bar',
 
                             'scopes'       => ['foo','openid'],
@@ -1938,7 +1968,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'expire_time'  => \time() + 3600,
                             'client_id'    => 'foo',
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'redirect_uri' => 'http://foo/bar',
 
                             'scopes'       => ['foo','openid'],
@@ -2012,7 +2042,7 @@ class AuthCodeGrantTest extends TestCase
                             'auth_code_id' => \uniqid(),
                             'expire_time'  => \time() + 3600,
                             'client_id'    => 'foo',
-                            'user_id'      => 123,
+                            'user_id'      => '123',
                             'scopes'       => ['foo'],
                             'redirect_uri' => 'http://foo/bar',
 
