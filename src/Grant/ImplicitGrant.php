@@ -256,7 +256,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
         );
     }
 
-    public function setAccessTokenRepository(AccessTokenRepositoryInterface $accessTokenRepository)
+    public function setAccessTokenRepository(AccessTokenRepositoryInterface $accessTokenRepository): void
     {
         if (!($accessTokenRepository instanceof \Idaas\OpenID\Repositories\AccessTokenRepositoryInterface)) {
             throw new \LogicException('The access token repository must be an instance of Idaas\OpenID\Repositories\AccessTokenRepositoryInterface');
