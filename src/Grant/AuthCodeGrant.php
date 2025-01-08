@@ -33,11 +33,6 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     protected $claimRepository;
 
     /**
-     * @var AccessTokenRepositoryInterface
-     */
-    protected $accessTokenRepository;
-
-    /**
      * @param AuthCodeRepositoryInterface     $authCodeRepository
      * @param RefreshTokenRepositoryInterface $refreshTokenRepository
      * @param \DateInterval                   $authCodeTTL

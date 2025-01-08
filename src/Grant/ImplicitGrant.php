@@ -24,11 +24,6 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
     private $idTokenTTL;
     private $queryDelimiter;
 
-    /**
-     * @var UserRepositoryInterface
-     */
-    protected $userRepository;
-
     protected $claimRepositoryInterface;
 
     /**
