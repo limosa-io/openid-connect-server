@@ -31,7 +31,7 @@ class AdvancedResourceServer extends ResourceServer
     /**
      * @return AuthorizationValidatorInterface
      */
-    protected function getAuthorizationValidator()
+    protected function getAuthorizationValidator(): AuthorizationValidatorInterface
     {
         return $this->authorizationValidator;
     }

@@ -16,6 +16,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,11 +32,6 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     protected $session;
 
     protected $claimRepository;
-
-    /**
-     * @var AccessTokenRepositoryInterface
-     */
-    protected $accessTokenRepository;
 
     /**
      * @param AuthCodeRepositoryInterface     $authCodeRepository
@@ -238,7 +234,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     /**
      * {@inheritdoc}
      */
-    public function completeAuthorizationRequest(AuthorizationRequest $authorizationRequest): ResponseTypeInterface
+    public function completeAuthorizationRequest(AuthorizationRequest|AuthorizationRequestInterface $authorizationRequest): ResponseTypeInterface
     {
         if (!($authorizationRequest instanceof AuthenticationRequest)) {
             throw OAuthServerException::invalidRequest('not possible');
@@ -297,5 +293,10 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
                 )
             );
         }
+    }
+
+    protected function createAuthorizationRequest(): AuthenticationRequest
+    {
+        return new AuthenticationRequest();
     }
 }

@@ -12,6 +12,7 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 use League\OAuth2\Server\ResponseTypes\RedirectResponse;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,11 +24,6 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
     private $authCodeTTL;
     private $idTokenTTL;
     private $queryDelimiter;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    protected $userRepository;
 
     protected $claimRepositoryInterface;
 
@@ -143,7 +139,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
         return $result;
     }
 
-    public function completeAuthorizationRequest(AuthorizationRequest $authorizationRequest): ResponseTypeInterface
+    public function completeAuthorizationRequest(AuthorizationRequest|AuthorizationRequestInterface $authorizationRequest): ResponseTypeInterface
     {
         if (!($authorizationRequest instanceof AuthenticationRequest)) {
             throw OAuthServerException::invalidRequest('not possible');
@@ -261,7 +257,7 @@ class ImplicitGrant extends \League\OAuth2\Server\Grant\ImplicitGrant
         );
     }
 
-    public function setAccessTokenRepository(AccessTokenRepositoryInterface $accessTokenRepository)
+    public function setAccessTokenRepository(AccessTokenRepositoryInterface $accessTokenRepository): void
     {
         if (!($accessTokenRepository instanceof \Idaas\OpenID\Repositories\AccessTokenRepositoryInterface)) {
             throw new \LogicException('The access token repository must be an instance of Idaas\OpenID\Repositories\AccessTokenRepositoryInterface');

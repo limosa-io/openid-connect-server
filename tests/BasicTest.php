@@ -48,9 +48,12 @@ class BasicTest extends TestCase
 
         $server->enableGrantType($grant);
 
+        $client = new ClientEntity();
+        $client->setIdentifier('test');
+
         $authRequest = new AuthenticationRequest();
         $authRequest->setAuthorizationApproved(true);
-        $authRequest->setClient(new ClientEntity());
+        $authRequest->setClient($client);
         $authRequest->setGrantTypeId('authorization_code_oidc');
         $authRequest->setUser(new UserEntity());
         $authRequest->setRedirectUri('http://redirect/destination');
